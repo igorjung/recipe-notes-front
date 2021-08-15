@@ -6,7 +6,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 // Layouts
 import DefaultLayout from '~/layouts/Default';
-import AuthLayout from '~/layouts/Auth';
+import PrivateLayout from '~/layouts/Private';
 
 export default function RouteWrapper({
   component: Component,
@@ -29,7 +29,7 @@ export default function RouteWrapper({
   let Layout = DefaultLayout;
 
   if (isPrivate) {
-    Layout = AuthLayout;
+    Layout = PrivateLayout;
   }
 
   function resizePage() {

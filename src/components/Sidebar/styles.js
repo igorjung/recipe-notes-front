@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 
 // Icons
 import { PersonFill, BookmarkFill } from 'styled-icons/bootstrap';
-import { FoodPizza } from 'styled-icons/fluentui-system-filled';
-import { Search } from 'styled-icons/boxicons-regular';
+import {
+  FoodEgg,
+  Food,
+  FoodCake,
+  FoodPizza,
+} from 'styled-icons/fluentui-system-filled';
+import { Search, Menu } from 'styled-icons/boxicons-regular';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -47,15 +52,23 @@ export const Container = styled.div`
   }
 `;
 
-export const Logo = styled.div`
+export const Header = styled.header`
+  width: 100%;
+  margin-bottom: 32px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const Logo = styled(Link)`
   width: 100%;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-
-  margin-bottom: 16px;
 
   strong {
     color: ${colors.secondary};
@@ -128,16 +141,16 @@ export const List = styled.ul`
   }
 `;
 
-export const Item = styled.li`
+export const Item = styled(Link)`
   width: 100%;
-  padding-left: 16px;
+  padding-left: 8px;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
 
-  li + & {
+  a + & {
     margin-top: 12px;
   }
 
@@ -197,11 +210,47 @@ export const IconSearch = styled(Search)`
   }
 `;
 
-export const IconPizza = styled(FoodPizza)`
+export const IconSnack = styled(FoodEgg)`
   color: ${colors.secondary};
   width: 18px;
 
   @media (max-width: 990px) {
     width: 16px;
+  }
+`;
+
+export const IconLunch = styled(Food)`
+  color: ${colors.secondary};
+  width: 18px;
+
+  @media (max-width: 990px) {
+    width: 16px;
+  }
+`;
+
+export const IconDessert = styled(FoodCake)`
+  color: ${colors.secondary};
+  width: 18px;
+
+  @media (max-width: 990px) {
+    width: 16px;
+  }
+`;
+
+export const IconOther = styled(FoodPizza)`
+  color: ${colors.secondary};
+  width: 18px;
+
+  @media (max-width: 990px) {
+    width: 16px;
+  }
+`;
+
+export const IconMenu = styled(Menu)`
+  color: ${colors.secondary};
+  height: 24px;
+
+  @media (max-width: 990px) {
+    height: 18px;
   }
 `;
