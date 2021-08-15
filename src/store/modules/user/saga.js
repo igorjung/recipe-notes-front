@@ -3,6 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 
 // Services
+import history from '~/services/history';
 import api from '~/services/api';
 
 // Actions
@@ -19,9 +20,9 @@ export function* updateProfile({ payload }) {
 
     const user = response.data;
 
-    delete user.password;
-
     yield put(updateProfileSuccess(user));
+
+    history.push('/');
   } catch (e) {
     if (!e.response || e.response.data.error === undefined) {
       toast.error(`Um erro aconteceu, tente novamente mais tarde.`);

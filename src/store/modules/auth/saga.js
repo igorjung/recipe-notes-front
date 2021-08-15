@@ -11,12 +11,9 @@ import { signInRequest, signInSuccess, signFailure } from './actions';
 
 export function* signIn({ payload }) {
   try {
-    const { email, password } = payload;
+    const data = payload;
 
-    const response = yield call(api.post, 'sessions', {
-      email,
-      password,
-    });
+    const response = yield call(api.post, 'auth/login', data);
 
     const { token, user } = response.data;
 
@@ -40,15 +37,12 @@ export function* signUp({ payload }) {
   try {
     const { data } = payload;
 
-    delete data.password_confirmation;
-
-    yield call(api.post, 'users', {
-      ...data,
-    });
+    yield call(api.post, 'auth/register', data);
 
     const { email, password } = data;
+    const loginData = { email, password };
 
-    yield put(signInRequest(email, password));
+    yield put(signInRequest(loginData));
   } catch (e) {
     if (!e.response || e.response.data.error === undefined) {
       toast.error(`Ops, ocorreu um erro! Tente novamente mais tarde.`);

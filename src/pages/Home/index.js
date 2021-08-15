@@ -7,7 +7,7 @@ import history from '~/services/history';
 // Styles
 import * as S from './styles';
 
-export default function Games() {
+export default function Home() {
   return (
     <S.Container>
       <h1>Adicionar nova receita</h1>

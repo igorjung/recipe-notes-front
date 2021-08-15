@@ -21,9 +21,9 @@ export default function RouteWrapper({
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   // Page Validation
-  // if (!signed && auth) {
-  //   return <Redirect to="/" />;
-  // }
+  if (!signed && isPrivate) {
+    return <Redirect to="/auth/signup" />;
+  }
 
   // Setting Layout
   let Layout = DefaultLayout;

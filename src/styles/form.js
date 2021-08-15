@@ -24,6 +24,10 @@ export const Row = styled.ul`
   grid-template-columns: ${props =>
     props.columns ? `repeat(${props.columns}, 1fr)` : '1fr'};
   column-gap: 16px;
+
+  & + ul {
+    margin-top: 16px;
+  }
 `;
 
 export const Column = styled.li`
@@ -34,27 +38,50 @@ export const Column = styled.li`
   justify-content: flex-start;
 
   label {
-    font-weight: bold;
-    color: ${colors.tertiary};
-    margin-bottom: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+
+    strong {
+      font-weight: bold;
+      color: ${colors.tertiary};
+      margin-bottom: 4px;
+
+      margin-left: 8px;
+    }
   }
 
   input {
     height: 40px;
     width: 100%;
-    border: 2px solid ${colors.primary};
+    border: 0;
     border-radius: 5px;
     padding: 0 15px;
-    color: ${colors.tertiary};
-    background-color: ${colors.secondary};
+    color: #000;
+    background-color: #ddd;
 
     :focus {
-      border: 2px solid ${colors.tertiary};
+      border: 2px solid ${colors.secondary};
     }
   }
 
   span {
     margin: 8px 0 0 4px;
+  }
+`;
+
+export const Footer = styled.footer`
+  width: 100%;
+  margin-top: 32px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  button {
+    margin-right: 8px;
   }
 `;
 

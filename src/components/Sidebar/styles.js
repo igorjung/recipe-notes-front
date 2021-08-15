@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // Icons
 import { PersonFill, BookmarkFill } from 'styled-icons/bootstrap';
@@ -67,7 +68,7 @@ export const Logo = styled.div`
   }
 `;
 
-export const User = styled.div`
+export const User = styled(Link)`
   width: 100%;
 
   display: flex;

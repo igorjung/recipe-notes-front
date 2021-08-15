@@ -4,7 +4,7 @@ import React from 'react';
 // Styles
 import * as S from './styles';
 
-export default function Games() {
+export default function Recipe() {
   return (
     <S.Container>
       <h1>Adicionar nova receita</h1>
