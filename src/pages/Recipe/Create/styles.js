@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AddToQueue } from 'styled-icons/boxicons-regular';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 export const Container = styled.div`
   height: 60%;

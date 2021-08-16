@@ -21,6 +21,7 @@
     "react-modal": "^3.14.3",
     "react-perfect-scrollbar": "^1.5.3",
     "react-redux": "^7.2.4",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-select": "^4.3.1",

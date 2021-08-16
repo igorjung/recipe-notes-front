@@ -12,7 +12,7 @@ import api from '~/services/api';
 import * as S from './styles';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 export default function Sidebar({ handleClose }) {
   // States from Redux

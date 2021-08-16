@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Form } from 'formik';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 // StyledComponents
 export const Container = styled(Form)`

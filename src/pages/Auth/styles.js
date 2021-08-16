@@ -6,7 +6,7 @@ import { Password } from 'styled-icons/material';
 import { DriveFileRenameOutline } from 'styled-icons/material-sharp';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 export const Wrapper = styled.div`
   height: 100%;

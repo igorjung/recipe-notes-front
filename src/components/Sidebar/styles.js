@@ -12,7 +12,7 @@ import {
 import { Search, Menu } from 'styled-icons/boxicons-regular';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 export const Wrapper = styled.div`
   height: 100%;

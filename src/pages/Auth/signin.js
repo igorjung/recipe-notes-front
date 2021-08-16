@@ -13,7 +13,7 @@ import * as S from './styles';
 import * as F from '~/styles/form';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 // Components
 import Button from '~/components/Button';
@@ -35,7 +35,6 @@ export default function Signin() {
 
   // Functions
   function handleSubmit(data) {
-    console.log(data);
     dispatch(signInRequest(data));
   }
 

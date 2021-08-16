@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Menu } from 'styled-icons/boxicons-regular';
 
 // Color Schema
-import colors from '~styles/colors';
+import colors from '~/styles/colors';
 
 // StyledComponents
 export const Wrapper = styled.div`
