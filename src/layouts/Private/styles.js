@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
 
 export const Button = styled.button`
   height: 30px;
-  width: 30px;
+  width: 45px;
   border-radius: 0 10px 10px 0;
 
   display: flex;

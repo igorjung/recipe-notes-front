@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 
 // Icons
-import { Book } from 'styled-icons/boxicons-regular';
+import { Book, FoodMenu } from 'styled-icons/boxicons-regular';
+import { TimeFive } from 'styled-icons/boxicons-solid';
 import { Bowl } from 'styled-icons/entypo';
-import { AppleAlt } from 'styled-icons/fa-solid';
+import { AppleAlt, MoneyBillWave } from 'styled-icons/fa-solid';
 import {
   FoodEgg,
   Food,
   FoodCake,
   FoodPizza,
+  Delete,
 } from 'styled-icons/fluentui-system-filled';
 
 // Color Schema
@@ -24,16 +26,59 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #333;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${colors.secondary};
+    border-radius: 30px;
+  }
 `;
 
 export const Header = styled.header`
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+`;
+
+export const Cards = styled.ul`
+  width: 100%;
+  margin-bottom: 8px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+export const Card = styled.div`
+  padding: 8px 16px;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background: ${colors.primary};
+
+  & + div {
+    margin-left: 32px;
+  }
+
+  strong {
+    margin-left: 16px;
+  }
 `;
 
 export const Body = styled.div`
@@ -73,8 +118,76 @@ export const List = styled.ul`
   }
 `;
 
+export const Item = styled.li`
+  width: 100%;
+  padding: 16px 32px;
+  border-radius: 5px;
+  margin-top: 16px;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: ${props => (props.grid ? props.grid : '1fr')};
+
+  background: ${colors.primary};
+`;
+
+export const Step = styled.li`
+  width: 100%;
+  padding: 32px;
+  border-radius: 5px;
+  margin-top: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  background: ${colors.primary};
+
+  header {
+    width: 100%;
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid ${colors.secondary};
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    h3 {
+      font-size: 22px;
+      color: ${colors.secondary};
+    }
+  }
+
+  footer {
+    width: 100%;
+    padding-top: 16px;
+    margin-top: 32px;
+    border-top: 1px solid ${colors.secondary};
+
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      strong {
+        margin-left: 8px;
+      }
+    }
+  }
+`;
+
 export const Footer = styled.footer`
   width: 100%;
+  margin-top: 100px;
 
   display: flex;
   flex-direction: row;
@@ -104,6 +217,33 @@ export const Description = styled.div`
   border-radius: 5px;
 
   background: ${colors.primary};
+`;
+
+export const IconTime = styled(TimeFive)`
+  color: ${colors.secondary};
+  width: 16px;
+
+  @media (max-width: 990px) {
+    width: 16px;
+  }
+`;
+
+export const IconMoney = styled(MoneyBillWave)`
+  color: ${colors.secondary};
+  width: 16px;
+
+  @media (max-width: 990px) {
+    width: 16px;
+  }
+`;
+
+export const IconFood = styled(FoodMenu)`
+  color: ${colors.secondary};
+  width: 16px;
+
+  @media (max-width: 990px) {
+    width: 18px;
+  }
 `;
 
 export const IconIngredient = styled(AppleAlt)`
@@ -166,5 +306,14 @@ export const IconOther = styled(FoodPizza)`
 
   @media (max-width: 990px) {
     width: 16px;
+  }
+`;
+
+export const IconDelete = styled(Delete)`
+  color: ${colors.warning};
+  width: 28px;
+
+  @media (max-width: 990px) {
+    width: 18px;
   }
 `;

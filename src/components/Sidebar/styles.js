@@ -43,11 +43,11 @@ export const Container = styled.div`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${colors.secondary};
+    background: ${colors.primary};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${colors.primary};
+    background: ${colors.secondary};
     border-radius: 30px;
   }
 `;
@@ -110,11 +110,11 @@ export const List = styled.ul`
   }
 
   ::-webkit-scrollbar-track {
-    background: ${colors.secondary};
+    background: ${colors.primary};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${colors.primary};
+    background: ${colors.secondary};
     border-radius: 30px;
   }
 
