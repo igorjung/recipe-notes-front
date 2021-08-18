@@ -5,11 +5,16 @@ import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
 // Services
-import history from '~/services/history';
 import api from '~/services/api';
 
 // Components
-import Button from '~/components/Button';
+import DeleteIngredient from './Modal/Delete/ingredient';
+import DeleteUtensil from './Modal/Delete/utensil';
+import DeleteStep from './Modal/Delete/step';
+import DeleteRecipe from './Modal/Delete/recipe';
+
+import RemoveIngredient from './Modal/Remove/ingredient';
+import RemoveUtensil from './Modal/Remove/utensil';
 
 // Styles
 import * as S from './styles';
@@ -23,6 +28,11 @@ export default function Recipe() {
   // States
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [modalIndex, setModalIndex] = useState(0);
+
+  const [ingredientId, setIngredientId] = useState(null);
+  const [utensilId, setUtensilId] = useState(null);
+  const [stepId, setStepId] = useState(null);
 
   const Icon = category => {
     switch (category) {
@@ -38,6 +48,15 @@ export default function Recipe() {
       default:
         return <S.IconOther />;
     }
+  };
+
+  const handleClose = () => {
+    setModalIndex(0);
+    setIngredientId(null);
+    setUtensilId(null);
+    setStepId(null);
+
+    getRecipe();
   };
 
   const getRecipe = async () => {
@@ -58,74 +77,6 @@ export default function Recipe() {
     setLoading(false);
   };
 
-  const deleteRecipe = async () => {
-    setLoading(true);
-
-    try {
-      await api.delete(`/recipes/${id}`);
-      history.goBack();
-    } catch (err) {
-      if (!err.response || err.response.data.error === undefined) {
-        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
-      } else {
-        toast.error(`${err.response.data.error}`);
-      }
-    }
-
-    setLoading(false);
-  };
-
-  const deleteIngredient = async ingredient_id => {
-    setLoading(true);
-
-    try {
-      await api.delete(`/ingredients/${ingredient_id}`);
-      getRecipe();
-    } catch (err) {
-      if (!err.response || err.response.data.error === undefined) {
-        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
-      } else {
-        toast.error(`${err.response.data.error}`);
-      }
-    }
-
-    setLoading(false);
-  };
-
-  const deleteUtensil = async utensil_id => {
-    setLoading(true);
-
-    try {
-      await api.delete(`/utensils/${utensil_id}`);
-      getRecipe();
-    } catch (err) {
-      if (!err.response || err.response.data.error === undefined) {
-        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
-      } else {
-        toast.error(`${err.response.data.error}`);
-      }
-    }
-
-    setLoading(false);
-  };
-
-  const deleteStep = async step_id => {
-    setLoading(true);
-
-    try {
-      await api.delete(`/steps/${step_id}`);
-      getRecipe();
-    } catch (err) {
-      if (!err.response || err.response.data.error === undefined) {
-        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
-      } else {
-        toast.error(`${err.response.data.error}`);
-      }
-    }
-
-    setLoading(false);
-  };
-
   useEffect(() => {
     getRecipe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,6 +84,38 @@ export default function Recipe() {
 
   return (
     <S.Container>
+      <DeleteIngredient
+        open={!!(modalIndex === 1 && ingredientId)}
+        handleClose={handleClose}
+        ingredientId={ingredientId}
+      />
+      <DeleteUtensil
+        open={!!(modalIndex === 2 && utensilId)}
+        handleClose={handleClose}
+        utensilId={utensilId}
+      />
+      <DeleteStep
+        open={!!(modalIndex === 3 && stepId)}
+        handleClose={handleClose}
+        stepId={stepId}
+      />
+      <DeleteRecipe
+        open={!!(modalIndex === 4 && recipe && recipe.id)}
+        handleClose={handleClose}
+        recipeId={recipe && recipe.id}
+      />
+
+      <RemoveIngredient
+        open={!!(modalIndex === 5 && ingredientId)}
+        handleClose={handleClose}
+        ingredientId={ingredientId}
+      />
+      <RemoveUtensil
+        open={!!(modalIndex === 6 && utensilId)}
+        handleClose={handleClose}
+        utensilId={utensilId}
+      />
+
       <S.Header>
         {loading || !recipe ? (
           <ReactLoading
@@ -190,7 +173,10 @@ export default function Recipe() {
                   <strong>R$ {ingredient.cost}</strong>
                   <button
                     type="button"
-                    onClick={() => deleteIngredient(ingredient.id)}
+                    onClick={() => {
+                      setIngredientId(ingredient.id);
+                      setModalIndex(1);
+                    }}
                   >
                     <S.IconDelete />
                   </button>
@@ -217,7 +203,10 @@ export default function Recipe() {
 
                   <button
                     type="button"
-                    onClick={() => deleteUtensil(utensil.id)}
+                    onClick={() => {
+                      setUtensilId(utensil.id);
+                      setModalIndex(2);
+                    }}
                   >
                     <S.IconDelete />
                   </button>
@@ -251,10 +240,68 @@ export default function Recipe() {
                         <strong>{step.time}</strong>
                       </div>
                     )}
-                    <button type="button" onClick={() => deleteStep(step.id)}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStepId(step.id);
+                        setModalIndex(3);
+                      }}
+                    >
                       <S.IconDelete />
                     </button>
                   </footer>
+
+                  {step.ingredients && step.ingredients[0] && (
+                    <S.SubList>
+                      <h3>Ingredientes</h3>
+                      {step.ingredients.map(ingredient => (
+                        <S.SubItem
+                          key={ingredient.id}
+                          grid="200px 100px auto 30px"
+                        >
+                          <strong>
+                            {ingredient.name}
+                            {ingredient.opcional && ' (opcional)'}
+                          </strong>
+                          <strong>{ingredient.quantity}</strong>
+                          <strong>R$ {ingredient.cost}</strong>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIngredientId(ingredient.id);
+                              setModalIndex(5);
+                            }}
+                          >
+                            <S.IconSubDelete />
+                          </button>
+                        </S.SubItem>
+                      ))}
+                    </S.SubList>
+                  )}
+
+                  {step.utensils && step.utensils[0] && (
+                    <S.SubList>
+                      <h3>Utensílios</h3>
+                      {step.utensils.map(utensil => (
+                        <S.SubItem key={utensil.id} grid="auto 30px">
+                          <strong>
+                            {utensil.name}
+                            {utensil.opcional && ' (opcional)'}
+                          </strong>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setUtensilId(utensil.id);
+                              setModalIndex(6);
+                            }}
+                          >
+                            <S.IconSubDelete />
+                          </button>
+                        </S.SubItem>
+                      ))}
+                    </S.SubList>
+                  )}
                 </S.Step>
               ))
             ) : (
@@ -264,30 +311,6 @@ export default function Recipe() {
             )}
           </S.List>
         </S.Body>
-      )}
-
-      {recipe && !loading && (
-        <S.Footer>
-          <Button
-            type="button"
-            background={colors.secondary}
-            color="#fff"
-            loading={false}
-            onClick={() => history.push('/')}
-          >
-            <strong>Voltar</strong>
-          </Button>
-
-          <Button
-            loading={false}
-            background={colors.warning}
-            color="#fff"
-            type="button"
-            onClick={deleteRecipe}
-          >
-            <strong>Deletar</strong>
-          </Button>
-        </S.Footer>
       )}
     </S.Container>
   );

@@ -10,8 +10,9 @@ import {
   Food,
   FoodCake,
   FoodPizza,
-  Delete,
 } from 'styled-icons/fluentui-system-filled';
+import { Close } from 'styled-icons/evaicons-solid';
+import { Delete } from 'styled-icons/material';
 
 // Color Schema
 import colors from '~/styles/colors';
@@ -131,6 +132,47 @@ export const Item = styled.li`
   background: ${colors.primary};
 `;
 
+export const SubList = styled.ul`
+  width: 100%;
+  margin-top: 32px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  & + ul {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid ${colors.secondary};
+  }
+
+  h3 {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    color: ${colors.secondary};
+
+    margin-bottom: 16px;
+  }
+`;
+
+export const SubItem = styled.li`
+  width: 100%;
+  border-radius: 5px;
+
+  & + li {
+    margin-top: 16px;
+    border-top: 1px solid ${colors.tertiary};
+  }
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: ${props => (props.grid ? props.grid : '1fr')};
+
+  background: ${colors.primary};
+`;
+
 export const Step = styled.li`
   width: 100%;
   padding: 32px;
@@ -187,7 +229,7 @@ export const Step = styled.li`
 
 export const Footer = styled.footer`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 1000px;
 
   display: flex;
   flex-direction: row;
@@ -311,6 +353,15 @@ export const IconOther = styled(FoodPizza)`
 
 export const IconDelete = styled(Delete)`
   color: ${colors.warning};
+  width: 28px;
+
+  @media (max-width: 990px) {
+    width: 18px;
+  }
+`;
+
+export const IconSubDelete = styled(Close)`
+  color: #fff;
   width: 28px;
 
   @media (max-width: 990px) {
