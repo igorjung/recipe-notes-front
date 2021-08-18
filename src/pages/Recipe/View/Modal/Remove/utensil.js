@@ -49,7 +49,7 @@ export default function RemoveUtensil({ open, handleClose, utensilId }) {
     setLoading(true);
 
     try {
-      await api.update(`/utensils/${utensilId}`, {
+      await api.put(`/utensils/${utensilId}`, {
         ...utensil,
         step_id: null,
       });
@@ -75,7 +75,7 @@ export default function RemoveUtensil({ open, handleClose, utensilId }) {
   return (
     <S.Container
       isOpen={open}
-      contentLabel="Viewer"
+      contentLabel="RemoveUtensil"
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >

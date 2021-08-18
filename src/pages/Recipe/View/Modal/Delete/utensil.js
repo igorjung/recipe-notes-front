@@ -72,7 +72,7 @@ export default function DeleteUtensil({ open, handleClose, utensilId }) {
   return (
     <S.Container
       isOpen={open}
-      contentLabel="Viewer"
+      contentLabel="DeleteUtensil"
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >

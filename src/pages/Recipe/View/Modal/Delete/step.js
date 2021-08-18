@@ -72,7 +72,7 @@ export default function DeleteStep({ open, handleClose, stepId }) {
   return (
     <S.Container
       isOpen={open}
-      contentLabel="Viewer"
+      contentLabel="DeleteStep"
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >

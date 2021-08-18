@@ -72,7 +72,7 @@ export default function DeleteIngredient({ open, handleClose, ingredientId }) {
   return (
     <S.Container
       isOpen={open}
-      contentLabel="Viewer"
+      contentLabel="DeleteIngredient"
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >

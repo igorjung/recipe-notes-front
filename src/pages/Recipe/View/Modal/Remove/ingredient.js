@@ -49,7 +49,7 @@ export default function RemoveIngredient({ open, handleClose, ingredientId }) {
     setLoading(true);
 
     try {
-      await api.update(`/ingredients/${ingredientId}`, {
+      await api.put(`/ingredients/${ingredientId}`, {
         ...ingredient,
         step_id: null,
       });
@@ -75,7 +75,7 @@ export default function RemoveIngredient({ open, handleClose, ingredientId }) {
   return (
     <S.Container
       isOpen={open}
-      contentLabel="Viewer"
+      contentLabel="RemoveIngredient"
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >
