@@ -42,6 +42,7 @@ export const Column = styled.li`
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+    margin-bottom: 4px;
 
     strong {
       font-weight: bold;
@@ -53,6 +54,34 @@ export const Column = styled.li`
   }
 
   input {
+    height: 40px;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    padding: 0 15px;
+    color: #000;
+    background-color: #ddd;
+
+    :focus {
+      border: 2px solid ${colors.secondary};
+    }
+  }
+
+  textarea {
+    height: 160px;
+    width: 100%;
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #000;
+    background-color: #ddd;
+
+    :focus {
+      border: 2px solid ${colors.secondary};
+    }
+  }
+
+  select {
     height: 40px;
     width: 100%;
     border: 0;

@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 
 // Icons
 import { Close } from 'styled-icons/evaicons-solid';
+import { DriveFileRenameOutline } from 'styled-icons/material-sharp';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -96,5 +97,14 @@ export const IconClose = styled(Close)`
 
   @media (max-width: 990px) {
     width: 18px;
+  }
+`;
+
+export const IconName = styled(DriveFileRenameOutline)`
+  color: ${colors.secondary};
+  width: 16px;
+
+  @media (max-width: 990px) {
+    width: 14px;
   }
 `;

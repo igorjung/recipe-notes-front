@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { toast } from 'react-toastify';
 
 // Services
@@ -17,15 +16,15 @@ import * as S from '../styles';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function RemoveIngredient({ open, handleClose, ingredientId }) {
+export default function RemoveIngredient({
+  open,
+  handleClose,
+  handleRefresh,
+  ingredientId,
+}) {
   // States
   const [ingredient, setIngredient] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Ref
-  const ref = useOnclickOutside(() => {
-    handleClose();
-  });
 
   const getIgredient = async () => {
     setLoading(true);
@@ -53,7 +52,7 @@ export default function RemoveIngredient({ open, handleClose, ingredientId }) {
         ...ingredient,
         step_id: null,
       });
-      handleClose();
+      handleRefresh();
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -79,7 +78,7 @@ export default function RemoveIngredient({ open, handleClose, ingredientId }) {
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >
-      <S.Content ref={ref}>
+      <S.Content>
         {ingredient ? (
           <>
             <S.Header>
@@ -130,6 +129,7 @@ export default function RemoveIngredient({ open, handleClose, ingredientId }) {
 RemoveIngredient.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   ingredientId: PropTypes.number,
 };
 

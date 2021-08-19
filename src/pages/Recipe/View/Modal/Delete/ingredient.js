@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { toast } from 'react-toastify';
 
 // Services
@@ -17,15 +16,15 @@ import * as S from '../styles';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function DeleteIngredient({ open, handleClose, ingredientId }) {
+export default function DeleteIngredient({
+  open,
+  handleClose,
+  handleRefresh,
+  ingredientId,
+}) {
   // States
   const [ingredient, setIngredient] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Ref
-  const ref = useOnclickOutside(() => {
-    handleClose();
-  });
 
   const getIgredient = async () => {
     setLoading(true);
@@ -50,7 +49,7 @@ export default function DeleteIngredient({ open, handleClose, ingredientId }) {
 
     try {
       await api.delete(`/ingredients/${ingredientId}`);
-      handleClose();
+      handleRefresh();
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -76,12 +75,12 @@ export default function DeleteIngredient({ open, handleClose, ingredientId }) {
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >
-      <S.Content ref={ref}>
+      <S.Content>
         {ingredient ? (
           <>
             <S.Header>
               <h2>{ingredient.name}</h2>
-              <button type="button" onClick={handleClose}>
+              <button type="button" onClick={handleRefresh}>
                 <S.IconClose />
               </button>
             </S.Header>
@@ -127,6 +126,7 @@ export default function DeleteIngredient({ open, handleClose, ingredientId }) {
 DeleteIngredient.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   ingredientId: PropTypes.number,
 };
 

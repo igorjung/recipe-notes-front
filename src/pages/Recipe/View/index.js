@@ -8,10 +8,19 @@ import { toast } from 'react-toastify';
 import api from '~/services/api';
 
 // Components
+import CreateIngredient from './Modal/Create/ingredient';
+import CreateUtensil from './Modal/Create/utensil';
+import CreateStep from './Modal/Create/step';
+
 import DeleteIngredient from './Modal/Delete/ingredient';
 import DeleteUtensil from './Modal/Delete/utensil';
 import DeleteStep from './Modal/Delete/step';
 import DeleteRecipe from './Modal/Delete/recipe';
+
+import UpdateIngredient from './Modal/Update/ingredient';
+import UpdateUtensil from './Modal/Update/utensil';
+import UpdateStep from './Modal/Update/step';
+import UpdateRecipe from './Modal/Update/recipe';
 
 import RemoveIngredient from './Modal/Remove/ingredient';
 import RemoveUtensil from './Modal/Remove/utensil';
@@ -50,18 +59,9 @@ export default function Recipe() {
     }
   };
 
-  const handleClose = () => {
-    setModalIndex(0);
-    setIngredientId(null);
-    setUtensilId(null);
-    setStepId(null);
-
-    getRecipe();
-  };
-
   const getRecipe = async () => {
-    setLoading(true);
     setRecipe(null);
+    setLoading(true);
 
     try {
       const response = await api.get(`/recipes/${id}`);
@@ -77,6 +77,21 @@ export default function Recipe() {
     setLoading(false);
   };
 
+  const handleClose = () => {
+    setModalIndex(0);
+    setIngredientId(null);
+    setUtensilId(null);
+    setStepId(null);
+  };
+
+  const handleRefresh = () => {
+    setModalIndex(0);
+    setIngredientId(null);
+    setUtensilId(null);
+    setStepId(null);
+    getRecipe();
+  };
+
   useEffect(() => {
     getRecipe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,37 +99,89 @@ export default function Recipe() {
 
   return (
     <S.Container>
-      <DeleteIngredient
-        open={!!(modalIndex === 1 && ingredientId)}
-        handleClose={handleClose}
-        ingredientId={ingredientId}
-      />
-      <DeleteUtensil
-        open={!!(modalIndex === 2 && utensilId)}
-        handleClose={handleClose}
-        utensilId={utensilId}
-      />
-      <DeleteStep
-        open={!!(modalIndex === 3 && stepId)}
-        handleClose={handleClose}
-        stepId={stepId}
-      />
-      <DeleteRecipe
-        open={!!(modalIndex === 4 && recipe && recipe.id)}
-        handleClose={handleClose}
-        recipeId={recipe && recipe.id}
-      />
+      <>
+        <DeleteIngredient
+          open={!!(modalIndex === 1 && ingredientId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          ingredientId={ingredientId}
+        />
+        <DeleteUtensil
+          open={!!(modalIndex === 2 && utensilId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          utensilId={utensilId}
+        />
+        <DeleteStep
+          open={!!(modalIndex === 3 && stepId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          stepId={stepId}
+        />
+        <DeleteRecipe
+          open={!!(modalIndex === 4 && recipe && recipe.id)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          recipeId={recipe && recipe.id}
+        />
 
-      <RemoveIngredient
-        open={!!(modalIndex === 5 && ingredientId)}
-        handleClose={handleClose}
-        ingredientId={ingredientId}
-      />
-      <RemoveUtensil
-        open={!!(modalIndex === 6 && utensilId)}
-        handleClose={handleClose}
-        utensilId={utensilId}
-      />
+        <RemoveIngredient
+          open={!!(modalIndex === 5 && ingredientId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          ingredientId={ingredientId}
+        />
+        <RemoveUtensil
+          open={!!(modalIndex === 6 && utensilId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          utensilId={utensilId}
+        />
+
+        <CreateIngredient
+          open={!!(modalIndex === 7)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          recipeId={recipe && recipe.id}
+        />
+        <CreateUtensil
+          open={!!(modalIndex === 8)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          recipeId={recipe && recipe.id}
+        />
+        <CreateStep
+          open={!!(modalIndex === 9)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          recipeId={recipe && recipe.id}
+        />
+
+        <UpdateIngredient
+          open={!!(modalIndex === 10 && ingredientId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          ingredientId={ingredientId}
+        />
+        <UpdateUtensil
+          open={!!(modalIndex === 11 && utensilId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          utensilId={utensilId}
+        />
+        <UpdateStep
+          open={!!(modalIndex === 12 && stepId)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          stepId={stepId}
+        />
+        <UpdateRecipe
+          open={!!(modalIndex === 13 && recipe && recipe.id)}
+          handleClose={handleClose}
+          handleRefresh={handleRefresh}
+          recipeId={recipe && recipe.id}
+        />
+      </>
 
       <S.Header>
         {loading || !recipe ? (
@@ -159,18 +226,33 @@ export default function Recipe() {
         <S.Body>
           <S.List>
             <header>
-              <S.IconIngredient />
-              <h2>Ingredientes</h2>
+              <S.Title>
+                <S.IconIngredient />
+                <h2>Ingredientes</h2>
+              </S.Title>
+
+              <button type="button" onClick={() => setModalIndex(7)}>
+                <S.IconAdd />
+              </button>
             </header>
             {recipe.ingredients && recipe.ingredients[0] ? (
               recipe.ingredients.map(ingredient => (
-                <S.Item key={ingredient.id} grid="200px 100px auto 60px">
+                <S.Item key={ingredient.id} grid="200px 100px auto 30px 30px">
                   <strong>
                     {ingredient.name}
                     {ingredient.opcional && ' (opcional)'}
                   </strong>
                   <strong>{ingredient.quantity}</strong>
-                  <strong>R$ {ingredient.cost}</strong>
+                  <strong>{ingredient.cost}</strong>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIngredientId(ingredient.id);
+                      setModalIndex(10);
+                    }}
+                  >
+                    <S.IconEdit />
+                  </button>
                   <button
                     type="button"
                     onClick={() => {
@@ -190,17 +272,31 @@ export default function Recipe() {
           </S.List>
           <S.List>
             <header>
-              <S.IconUtensil />
-              <h2>Utensílios</h2>
+              <S.Title>
+                <S.IconUtensil />
+                <h2>Utensílios</h2>
+              </S.Title>
+
+              <button type="button" onClick={() => setModalIndex(8)}>
+                <S.IconAdd />
+              </button>
             </header>
             {recipe.utensils && recipe.utensils[0] ? (
               recipe.utensils.map(utensil => (
-                <S.Item key={utensil.id} grid="auto 60px">
+                <S.Item key={utensil.id} grid="auto 30px 30px">
                   <strong>
                     {utensil.name}
                     {utensil.opcional && ' (opcional)'}
                   </strong>
-
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUtensilId(utensil.id);
+                      setModalIndex(11);
+                    }}
+                  >
+                    <S.IconEdit />
+                  </button>
                   <button
                     type="button"
                     onClick={() => {
@@ -220,15 +316,32 @@ export default function Recipe() {
           </S.List>
           <S.List>
             <header>
-              <S.IconStep />
-              <h2>Modo de preparo</h2>
+              <S.Title>
+                <S.IconStep />
+                <h2>Modo de preparo</h2>
+              </S.Title>
+
+              <button type="button" onClick={() => setModalIndex(9)}>
+                <S.IconAdd />
+              </button>
             </header>
             {recipe.steps && recipe.steps[0] ? (
               recipe.steps.map((step, index) => (
-                <S.Step key={step.id} grid="auto 60px">
+                <S.Step key={step.id}>
                   <header>
-                    <h3>{index + 1}</h3>
-                    <strong>{step.opcional && 'Opcional'}</strong>
+                    <div>
+                      <h3>{index + 1}</h3>
+                      <strong>{step.opcional && 'Opcional'}</strong>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStepId(step.id);
+                        setModalIndex(12);
+                      }}
+                    >
+                      <S.IconEdit />
+                    </button>
                   </header>
 
                   <strong>{step.description}</strong>

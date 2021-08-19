@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { toast } from 'react-toastify';
 
 // Services
@@ -17,15 +16,15 @@ import * as S from '../styles';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function DeleteRecipe({ open, handleClose, recipeId }) {
+export default function DeleteRecipe({
+  open,
+  handleClose,
+  handleRefresh,
+  recipeId,
+}) {
   // States
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Ref
-  const ref = useOnclickOutside(() => {
-    handleClose();
-  });
 
   const getRecipe = async () => {
     setLoading(true);
@@ -33,7 +32,7 @@ export default function DeleteRecipe({ open, handleClose, recipeId }) {
 
     try {
       const response = await api.get(`/recipes/${recipeId}`);
-      setRecipe(response.data);
+      handleRefresh(response.data);
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -76,7 +75,7 @@ export default function DeleteRecipe({ open, handleClose, recipeId }) {
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >
-      <S.Content ref={ref}>
+      <S.Content>
         {recipe ? (
           <>
             <S.Header>
@@ -127,6 +126,7 @@ export default function DeleteRecipe({ open, handleClose, recipeId }) {
 DeleteRecipe.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   recipeId: PropTypes.number,
 };
 

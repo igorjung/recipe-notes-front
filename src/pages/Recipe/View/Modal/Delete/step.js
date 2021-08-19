@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
-import useOnclickOutside from 'react-cool-onclickoutside';
 import { toast } from 'react-toastify';
 
 // Services
@@ -17,15 +16,15 @@ import * as S from '../styles';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function DeleteStep({ open, handleClose, stepId }) {
+export default function DeleteStep({
+  open,
+  handleClose,
+  handleRefresh,
+  stepId,
+}) {
   // States
   const [step, setStep] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Ref
-  const ref = useOnclickOutside(() => {
-    handleClose();
-  });
 
   const getStep = async () => {
     setLoading(true);
@@ -50,7 +49,7 @@ export default function DeleteStep({ open, handleClose, stepId }) {
 
     try {
       await api.delete(`/steps/${stepId}`);
-      handleClose();
+      handleRefresh();
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -76,7 +75,7 @@ export default function DeleteStep({ open, handleClose, stepId }) {
       ariaHideApp={false}
       // onAfterOpen={scrollToBottom}
     >
-      <S.Content ref={ref}>
+      <S.Content>
         {step ? (
           <>
             <S.Header>
@@ -127,6 +126,7 @@ export default function DeleteStep({ open, handleClose, stepId }) {
 DeleteStep.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   stepId: PropTypes.number,
 };
 

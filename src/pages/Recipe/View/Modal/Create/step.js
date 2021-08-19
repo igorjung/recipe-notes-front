@@ -2,11 +2,9 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
-import useOnclickOutside from 'react-cool-onclickoutside';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+import Switch from 'react-switch';
 
 // Services
 import api from '~/services/api';
@@ -21,10 +19,14 @@ import * as F from '~/styles/form';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function CreateStep({ open, handleClose, recipeId }) {
+export default function CreateStep({
+  open,
+  handleClose,
+  handleRefresh,
+  recipeId,
+}) {
   // States
   const [loading, setLoading] = useState(false);
-  const [opcional, setOpcional] = useState(false);
 
   // Validators
   const Schema = Yup.object().shape({
@@ -32,25 +34,20 @@ export default function CreateStep({ open, handleClose, recipeId }) {
     time: Yup.string(),
   });
 
-  // Ref
-  const ref = useOnclickOutside(() => {
-    handleClose();
-  });
-
-  const createStep = async (values, { reset }) => {
+  const createStep = async (values, { resetForm }) => {
     setLoading(true);
 
     try {
       const data = {
         description: values.description,
         time: values.time,
-        opcional,
+        opcional: values.opcional,
         recipe_id: recipeId,
       };
 
       await api.post(`/steps`, data);
-      handleClose();
-      reset();
+      handleRefresh();
+      resetForm();
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -64,7 +61,7 @@ export default function CreateStep({ open, handleClose, recipeId }) {
 
   return (
     <S.Container isOpen={open} contentLabel="CreateStep" ariaHideApp={false}>
-      <S.Content ref={ref}>
+      <S.Content>
         <S.Header>
           <h2>Adicionar Etapa</h2>
           <button type="button" onClick={handleClose}>
@@ -80,7 +77,14 @@ export default function CreateStep({ open, handleClose, recipeId }) {
             validationSchema={Schema}
             onSubmit={createStep}
           >
-            {({ values, handleChange, handleBlur, errors, touched }) => (
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              errors,
+              touched,
+            }) => (
               <F.Container>
                 <F.Row>
                   <F.Column>
@@ -88,7 +92,7 @@ export default function CreateStep({ open, handleClose, recipeId }) {
                       <S.IconName />
                       <strong>Descrição</strong>
                     </label>
-                    <input
+                    <textarea
                       id="description"
                       name="description"
                       type="text"
@@ -122,16 +126,24 @@ export default function CreateStep({ open, handleClose, recipeId }) {
                   </F.Column>
                 </F.Row>
 
-                <FormControlLabel
-                  control={
+                <F.Row>
+                  <F.Column>
+                    <label>
+                      <S.IconName />
+                      <strong>Opcional</strong>
+                    </label>
                     <Switch
-                      checked={opcional}
-                      onChange={e => setOpcional(e.target.checked)}
-                      name="opcional"
+                      onChange={e => {
+                        setFieldValue('opcional', e);
+                      }}
+                      checked={values.opcional || false}
+                      onColor={colors.secondary}
+                      offColor={colors.tertiary}
                     />
-                  }
-                  label="Opcional"
-                />
+
+                    {errors.cost && touched.cost && <span>{errors.cost}</span>}
+                  </F.Column>
+                </F.Row>
 
                 <F.Footer>
                   <Button
@@ -165,6 +177,7 @@ export default function CreateStep({ open, handleClose, recipeId }) {
 CreateStep.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
+  handleRefresh: PropTypes.func.isRequired,
   recipeId: PropTypes.number,
 };
 

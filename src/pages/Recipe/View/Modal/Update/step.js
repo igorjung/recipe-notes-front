@@ -19,7 +19,7 @@ import * as F from '~/styles/form';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function CreateUtensil({
+export default function CreateStep({
   open,
   handleClose,
   handleRefresh,
@@ -30,20 +30,22 @@ export default function CreateUtensil({
 
   // Validators
   const Schema = Yup.object().shape({
-    name: Yup.string().required('Esse campo é obrigatório'),
+    description: Yup.string().required('Esse campo é obrigatório'),
+    time: Yup.string(),
   });
 
-  const createUtensil = async (values, { resetForm }) => {
+  const createStep = async (values, { resetForm }) => {
     setLoading(true);
 
     try {
       const data = {
-        name: values.name,
+        description: values.description,
+        time: values.time,
         opcional: values.opcional,
         recipe_id: recipeId,
       };
 
-      await api.post(`/utensils`, data);
+      await api.post(`/steps`, data);
       handleRefresh();
       resetForm();
     } catch (err) {
@@ -58,10 +60,10 @@ export default function CreateUtensil({
   };
 
   return (
-    <S.Container isOpen={open} contentLabel="CreateUtensil" ariaHideApp={false}>
+    <S.Container isOpen={open} contentLabel="CreateStep" ariaHideApp={false}>
       <S.Content>
         <S.Header>
-          <h2>Adicionar Utensílio</h2>
+          <h2>Adicionar Etapa</h2>
           <button type="button" onClick={handleClose}>
             <S.IconClose />
           </button>
@@ -69,10 +71,11 @@ export default function CreateUtensil({
         <S.Body>
           <Formik
             initialValues={{
-              name: '',
+              description: '',
+              time: '',
             }}
             validationSchema={Schema}
-            onSubmit={createUtensil}
+            onSubmit={createStep}
           >
             {({
               values,
@@ -87,18 +90,39 @@ export default function CreateUtensil({
                   <F.Column>
                     <label>
                       <S.IconName />
-                      <strong>Nome</strong>
+                      <strong>Descrição</strong>
                     </label>
                     <input
-                      id="name"
-                      name="name"
+                      id="description"
+                      name="description"
                       type="text"
-                      value={values.name}
-                      error={errors.name}
+                      value={values.description}
+                      error={errors.description}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                    {errors.name && touched.name && <span>{errors.name}</span>}
+                    {errors.description && touched.description && (
+                      <span>{errors.description}</span>
+                    )}
+                  </F.Column>
+                </F.Row>
+
+                <F.Row>
+                  <F.Column>
+                    <label>
+                      <S.IconName />
+                      <strong>Tempo de Preparo</strong>
+                    </label>
+                    <input
+                      id="time"
+                      name="time"
+                      type="text"
+                      value={values.time}
+                      error={errors.time}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {errors.time && touched.time && <span>{errors.time}</span>}
                   </F.Column>
                 </F.Row>
 
@@ -150,7 +174,7 @@ export default function CreateUtensil({
 }
 
 // Props
-CreateUtensil.propTypes = {
+CreateStep.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   handleRefresh: PropTypes.func.isRequired,
@@ -158,7 +182,7 @@ CreateUtensil.propTypes = {
 };
 
 // Default Props
-CreateUtensil.defaultProps = {
+CreateStep.defaultProps = {
   open: false,
   recipeId: null,
 };

@@ -10,9 +10,11 @@ import {
   Food,
   FoodCake,
   FoodPizza,
+  AddSquare,
 } from 'styled-icons/fluentui-system-filled';
 import { Close } from 'styled-icons/evaicons-solid';
 import { Delete } from 'styled-icons/material';
+import { DriveFileRenameOutline } from 'styled-icons/material-sharp';
 
 // Color Schema
 import colors from '~/styles/colors';
@@ -54,6 +56,7 @@ export const Header = styled.header`
 
 export const Cards = styled.ul`
   width: 100%;
+  margin-top: 16px;
   margin-bottom: 8px;
 
   display: flex;
@@ -111,11 +114,7 @@ export const List = styled.ul`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-
-    h2 {
-      margin-left: 8px;
-    }
+    justify-content: space-between;
   }
 `;
 
@@ -239,7 +238,6 @@ export const Footer = styled.footer`
 
 export const Title = styled.div`
   width: 100%;
-  margin-bottom: 16px;
 
   display: flex;
   flex-direction: row;
@@ -250,6 +248,10 @@ export const Title = styled.div`
     font-size: 24px;
     margin-left: 16px;
     color: ${colors.secondary};
+  }
+
+  h2 {
+    margin-left: 16px;
   }
 `;
 
@@ -353,7 +355,16 @@ export const IconOther = styled(FoodPizza)`
 
 export const IconDelete = styled(Delete)`
   color: ${colors.warning};
-  width: 28px;
+  width: 22px;
+
+  @media (max-width: 990px) {
+    width: 18px;
+  }
+`;
+
+export const IconEdit = styled(DriveFileRenameOutline)`
+  color: ${colors.secondary};
+  width: 22px;
 
   @media (max-width: 990px) {
     width: 18px;
@@ -363,6 +374,15 @@ export const IconDelete = styled(Delete)`
 export const IconSubDelete = styled(Close)`
   color: #fff;
   width: 28px;
+
+  @media (max-width: 990px) {
+    width: 18px;
+  }
+`;
+
+export const IconAdd = styled(AddSquare)`
+  color: ${colors.secondary};
+  width: 24px;
 
   @media (max-width: 990px) {
     width: 18px;
