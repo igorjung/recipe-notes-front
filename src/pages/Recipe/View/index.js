@@ -194,8 +194,13 @@ export default function Recipe() {
         ) : (
           <>
             <S.Title>
-              {Icon(recipe.category)}
-              <h1>{recipe.name}</h1>
+              <div>
+                {Icon(recipe.category)}
+                <h1>{recipe.name}</h1>
+              </div>
+              <button type="button" onClick={() => setModalIndex(13)}>
+                <S.IconEdit />
+              </button>
             </S.Title>
             {recipe && (
               <S.Cards>
@@ -227,13 +232,15 @@ export default function Recipe() {
           <S.List>
             <header>
               <S.Title>
-                <S.IconIngredient />
-                <h2>Ingredientes</h2>
-              </S.Title>
+                <div>
+                  <S.IconIngredient />
+                  <h2>Ingredientes</h2>
+                </div>
 
-              <button type="button" onClick={() => setModalIndex(7)}>
-                <S.IconAdd />
-              </button>
+                <button type="button" onClick={() => setModalIndex(7)}>
+                  <S.IconAdd />
+                </button>
+              </S.Title>
             </header>
             {recipe.ingredients && recipe.ingredients[0] ? (
               recipe.ingredients.map(ingredient => (
@@ -273,13 +280,14 @@ export default function Recipe() {
           <S.List>
             <header>
               <S.Title>
-                <S.IconUtensil />
-                <h2>Utensílios</h2>
+                <div>
+                  <S.IconUtensil />
+                  <h2>Utensílios</h2>
+                </div>
+                <button type="button" onClick={() => setModalIndex(8)}>
+                  <S.IconAdd />
+                </button>
               </S.Title>
-
-              <button type="button" onClick={() => setModalIndex(8)}>
-                <S.IconAdd />
-              </button>
             </header>
             {recipe.utensils && recipe.utensils[0] ? (
               recipe.utensils.map(utensil => (
@@ -317,13 +325,14 @@ export default function Recipe() {
           <S.List>
             <header>
               <S.Title>
-                <S.IconStep />
-                <h2>Modo de preparo</h2>
+                <div>
+                  <S.IconStep />
+                  <h2>Modo de preparo</h2>
+                </div>
+                <button type="button" onClick={() => setModalIndex(9)}>
+                  <S.IconAdd />
+                </button>
               </S.Title>
-
-              <button type="button" onClick={() => setModalIndex(9)}>
-                <S.IconAdd />
-              </button>
             </header>
             {recipe.steps && recipe.steps[0] ? (
               recipe.steps.map((step, index) => (
@@ -363,58 +372,6 @@ export default function Recipe() {
                       <S.IconDelete />
                     </button>
                   </footer>
-
-                  {step.ingredients && step.ingredients[0] && (
-                    <S.SubList>
-                      <h3>Ingredientes</h3>
-                      {step.ingredients.map(ingredient => (
-                        <S.SubItem
-                          key={ingredient.id}
-                          grid="200px 100px auto 30px"
-                        >
-                          <strong>
-                            {ingredient.name}
-                            {ingredient.opcional && ' (opcional)'}
-                          </strong>
-                          <strong>{ingredient.quantity}</strong>
-                          <strong>R$ {ingredient.cost}</strong>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setIngredientId(ingredient.id);
-                              setModalIndex(5);
-                            }}
-                          >
-                            <S.IconSubDelete />
-                          </button>
-                        </S.SubItem>
-                      ))}
-                    </S.SubList>
-                  )}
-
-                  {step.utensils && step.utensils[0] && (
-                    <S.SubList>
-                      <h3>Utensílios</h3>
-                      {step.utensils.map(utensil => (
-                        <S.SubItem key={utensil.id} grid="auto 30px">
-                          <strong>
-                            {utensil.name}
-                            {utensil.opcional && ' (opcional)'}
-                          </strong>
-
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setUtensilId(utensil.id);
-                              setModalIndex(6);
-                            }}
-                          >
-                            <S.IconSubDelete />
-                          </button>
-                        </S.SubItem>
-                      ))}
-                    </S.SubList>
-                  )}
                 </S.Step>
               ))
             ) : (

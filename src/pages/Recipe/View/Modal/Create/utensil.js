@@ -70,6 +70,7 @@ export default function CreateUtensil({
           <Formik
             initialValues={{
               name: '',
+              opcional: false,
             }}
             validationSchema={Schema}
             onSubmit={createUtensil}

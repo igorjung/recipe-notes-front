@@ -21,7 +21,7 @@ import * as F from '~/styles/form';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function CreateIngredient({
+export default function UpdateIngredient({
   open,
   handleClose,
   handleRefresh,
@@ -78,7 +78,7 @@ export default function CreateIngredient({
     setLoading(false);
   };
 
-  const createIngredient = async (values, { resetForm }) => {
+  const updateIngredient = async (values, { resetForm }) => {
     setLoading(true);
 
     try {
@@ -122,7 +122,7 @@ export default function CreateIngredient({
         {ingredient && initialValue ? (
           <>
             <S.Header>
-              <h2>Editando Ingrediente</h2>
+              <h2>Editar Ingrediente</h2>
               <button type="button" onClick={handleClose}>
                 <S.IconClose />
               </button>
@@ -131,7 +131,7 @@ export default function CreateIngredient({
               <Formik
                 initialValues={initialValue || {}}
                 validationSchema={Schema}
-                onSubmit={createIngredient}
+                onSubmit={updateIngredient}
               >
                 {({
                   values,
@@ -288,7 +288,7 @@ export default function CreateIngredient({
 }
 
 // Props
-CreateIngredient.propTypes = {
+UpdateIngredient.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   handleRefresh: PropTypes.func.isRequired,
@@ -296,7 +296,7 @@ CreateIngredient.propTypes = {
 };
 
 // Default Props
-CreateIngredient.defaultProps = {
+UpdateIngredient.defaultProps = {
   open: false,
   ingredientId: null,
 };

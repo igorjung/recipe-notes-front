@@ -1,10 +1,10 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactLoading from 'react-loading';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
-import Switch from 'react-switch';
 
 // Services
 import api from '~/services/api';
@@ -20,38 +20,32 @@ import * as F from '~/styles/form';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function CreateIngredient({
+export default function UpdateRecipe({
   open,
   handleClose,
   handleRefresh,
   recipeId,
 }) {
   // States
+  const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Validators
   const Schema = Yup.object().shape({
     name: Yup.string().required('Esse campo é obrigatório'),
-    quantity: Yup.string(),
-    unity: Yup.string(),
-    cost: Yup.string(),
+    description: Yup.string(),
+    category: Yup.string(),
+    preparation_time: Yup.string(),
+    financial_cost: Yup.string(),
   });
 
-  const createIngredient = async (values, { resetForm }) => {
+  const getRecipe = async () => {
     setLoading(true);
+    setRecipe(null);
 
     try {
-      const data = {
-        name: values.name,
-        quantity: `${values.quantity} ${values.unity}`,
-        cost: values.cost,
-        opcional: values.opcional,
-        recipe_id: recipeId,
-      };
-
-      await api.post(`/ingredients`, data);
-      handleRefresh();
-      resetForm();
+      const response = await api.get(`/recipes/${recipeId}`);
+      setRecipe(response.data);
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -63,172 +57,208 @@ export default function CreateIngredient({
     setLoading(false);
   };
 
+  const updateRecipe = async (values, { resetForm }) => {
+    setLoading(true);
+
+    try {
+      const data = {
+        name: values.name,
+        description: values.description,
+        category: values.category,
+        preparation_time: values.preparation_time,
+        financial_cost: values.financial_cost,
+      };
+
+      await api.put(`/recipes/${recipeId}`, data);
+      handleRefresh();
+      resetForm();
+      setRecipe(null);
+    } catch (err) {
+      if (!err.response || err.response.data.error === undefined) {
+        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
+      } else {
+        toast.error(`${err.response.data.error}`);
+      }
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (open && recipeId) {
+      getRecipe();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, recipeId]);
+
   return (
-    <S.Container
-      isOpen={open}
-      contentLabel="CreateIngredient"
-      ariaHideApp={false}
-    >
+    <S.Container isOpen={open} contentLabel="UpdateRecipe" ariaHideApp={false}>
       <S.Content>
-        <S.Header>
-          <h2>Adicionar Ingrediente</h2>
-          <button type="button" onClick={handleClose}>
-            <S.IconClose />
-          </button>
-        </S.Header>
-        <S.Body>
-          <Formik
-            initialValues={{
-              name: '',
-              quantity: '',
-              unity: '',
-              cost: '',
-              opcional: false,
-            }}
-            validationSchema={Schema}
-            onSubmit={createIngredient}
-          >
-            {({
-              values,
-              handleChange,
-              handleBlur,
-              setFieldValue,
-              errors,
-              touched,
-            }) => (
-              <F.Container>
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Nome</strong>
-                    </label>
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      value={values.name}
-                      error={errors.name}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.name && touched.name && <span>{errors.name}</span>}
-                  </F.Column>
-                </F.Row>
+        {recipe ? (
+          <>
+            <S.Header>
+              <h2>Editar Receita</h2>
+              <button type="button" onClick={handleClose}>
+                <S.IconClose />
+              </button>
+            </S.Header>
+            <S.Body>
+              <Formik
+                initialValues={{
+                  name: recipe.name || '',
+                  description: recipe.description || '',
+                  category: recipe.category || '',
+                  preparation_time: recipe.preparation_time || '',
+                  financial_cost: recipe.financial_cost || '',
+                }}
+                validationSchema={Schema}
+                onSubmit={updateRecipe}
+              >
+                {({ values, handleChange, handleBlur, errors, touched }) => (
+                  <F.Container>
+                    <F.Row columns={2}>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Nome</strong>
+                        </label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          value={values.name}
+                          error={errors.name}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.name && touched.name && (
+                          <span>{errors.name}</span>
+                        )}
+                      </F.Column>
 
-                <F.Row columns={2}>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Quantidade</strong>
-                    </label>
-                    <input
-                      id="quantity"
-                      name="quantity"
-                      type="text"
-                      value={values.quantity}
-                      error={errors.quantity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.quantity && touched.quantity && (
-                      <span>{errors.quantity}</span>
-                    )}
-                  </F.Column>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Categoria</strong>
+                        </label>
+                        <select
+                          id="category"
+                          name="category"
+                          value={values.category}
+                          error={errors.category}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        >
+                          <option vlaue="" />
+                          <option vlaue="Lanche.">Lanche</option>
+                          <option vlaue="Refeição">Refeição</option>
+                          <option vlaue="Sobremesa">Sobremesa</option>
+                        </select>
+                        {errors.category && touched.category && (
+                          <span>{errors.category}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
 
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Unidade</strong>
-                    </label>
-                    <select
-                      id="unity"
-                      name="unity"
-                      value={values.unity}
-                      error={errors.unity}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      <option vlaue="" />
-                      <option vlaue="un.">un.</option>
-                      <option vlaue="mL">mL</option>
-                      <option vlaue="L">L</option>
-                      <option vlaue="g">g</option>
-                      <option vlaue="kg">kg</option>
-                    </select>
-                    {errors.unity && touched.unity && (
-                      <span>{errors.unity}</span>
-                    )}
-                  </F.Column>
-                </F.Row>
+                    <F.Row columns={2}>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Tempo de preparo</strong>
+                        </label>
+                        <input
+                          id="preparation_time"
+                          name="preparation_time"
+                          type="text"
+                          value={values.preparation_time}
+                          error={errors.preparation_time}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.preparation_time &&
+                          touched.preparation_time && (
+                            <span>{errors.preparation_time}</span>
+                          )}
+                      </F.Column>
 
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Custo</strong>
-                    </label>
-                    <MoneyInput
-                      id="cost"
-                      name="cost"
-                      value={values.cost}
-                      error={errors.cost}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.cost && touched.cost && <span>{errors.cost}</span>}
-                  </F.Column>
-                </F.Row>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Custo</strong>
+                        </label>
+                        <MoneyInput
+                          id="financial_cost"
+                          name="financial_cost"
+                          value={values.financial_cost}
+                          error={errors.financial_cost}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.financial_cost && touched.financial_cost && (
+                          <span>{errors.financial_cost}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
 
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Opcional</strong>
-                    </label>
-                    <Switch
-                      onChange={e => {
-                        setFieldValue('opcional', e);
-                      }}
-                      checked={values.opcional || false}
-                      onColor={colors.secondary}
-                      offColor={colors.tertiary}
-                    />
-
-                    {errors.cost && touched.cost && <span>{errors.cost}</span>}
-                  </F.Column>
-                </F.Row>
-
-                <F.Footer>
-                  <Button
-                    loading={false}
-                    background={colors.tertiary}
-                    color="#333"
-                    type="button"
-                    onClick={handleClose}
-                  >
-                    <strong>Cancelar</strong>
-                  </Button>
-                  <Button
-                    loading={loading}
-                    background={colors.secondary}
-                    color="#fff"
-                    type="submit"
-                  >
-                    <strong>Confirmar</strong>
-                  </Button>
-                </F.Footer>
-              </F.Container>
-            )}
-          </Formik>
-        </S.Body>
+                    <F.Row>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Descrição</strong>
+                        </label>
+                        <textarea
+                          id="description"
+                          name="description"
+                          type="text"
+                          value={values.description}
+                          error={errors.description}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.description && touched.description && (
+                          <span>{errors.description}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
+                    <F.Footer>
+                      <Button
+                        loading={false}
+                        background={colors.tertiary}
+                        color="#333"
+                        type="button"
+                        onClick={handleClose}
+                      >
+                        <strong>Cancelar</strong>
+                      </Button>
+                      <Button
+                        loading={loading}
+                        background={colors.secondary}
+                        color="#fff"
+                        type="submit"
+                      >
+                        <strong>Confirmar</strong>
+                      </Button>
+                    </F.Footer>
+                  </F.Container>
+                )}
+              </Formik>
+            </S.Body>
+          </>
+        ) : (
+          <ReactLoading
+            type="spin"
+            color={colors.secondary}
+            height={20}
+            width={20}
+          />
+        )}
       </S.Content>
     </S.Container>
   );
 }
 
 // Props
-CreateIngredient.propTypes = {
+UpdateRecipe.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   handleRefresh: PropTypes.func.isRequired,
@@ -236,7 +266,7 @@ CreateIngredient.propTypes = {
 };
 
 // Default Props
-CreateIngredient.defaultProps = {
+UpdateRecipe.defaultProps = {
   open: false,
   recipeId: null,
 };

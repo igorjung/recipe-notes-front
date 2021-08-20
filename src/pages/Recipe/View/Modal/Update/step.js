@@ -1,5 +1,6 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactLoading from 'react-loading';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -19,13 +20,14 @@ import * as F from '~/styles/form';
 // Color Schema
 import colors from '~styles/colors';
 
-export default function CreateStep({
+export default function UpdateStep({
   open,
   handleClose,
   handleRefresh,
-  recipeId,
+  stepId,
 }) {
   // States
+  const [step, setStep] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Validators
@@ -34,7 +36,25 @@ export default function CreateStep({
     time: Yup.string(),
   });
 
-  const createStep = async (values, { resetForm }) => {
+  const getStep = async () => {
+    setLoading(true);
+    setStep(null);
+
+    try {
+      const response = await api.get(`/steps/${stepId}`);
+      setStep(response.data);
+    } catch (err) {
+      if (!err.response || err.response.data.error === undefined) {
+        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
+      } else {
+        toast.error(`${err.response.data.error}`);
+      }
+    }
+
+    setLoading(false);
+  };
+
+  const updateStep = async (values, { resetForm }) => {
     setLoading(true);
 
     try {
@@ -42,10 +62,9 @@ export default function CreateStep({
         description: values.description,
         time: values.time,
         opcional: values.opcional,
-        recipe_id: recipeId,
       };
 
-      await api.post(`/steps`, data);
+      await api.put(`/steps/${stepId}`, data);
       handleRefresh();
       resetForm();
     } catch (err) {
@@ -59,130 +78,152 @@ export default function CreateStep({
     setLoading(false);
   };
 
+  useEffect(() => {
+    if (open && stepId) {
+      getStep();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, stepId]);
+
   return (
-    <S.Container isOpen={open} contentLabel="CreateStep" ariaHideApp={false}>
+    <S.Container isOpen={open} contentLabel="UpdateStep" ariaHideApp={false}>
       <S.Content>
-        <S.Header>
-          <h2>Adicionar Etapa</h2>
-          <button type="button" onClick={handleClose}>
-            <S.IconClose />
-          </button>
-        </S.Header>
-        <S.Body>
-          <Formik
-            initialValues={{
-              description: '',
-              time: '',
-            }}
-            validationSchema={Schema}
-            onSubmit={createStep}
-          >
-            {({
-              values,
-              handleChange,
-              handleBlur,
-              setFieldValue,
-              errors,
-              touched,
-            }) => (
-              <F.Container>
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Descrição</strong>
-                    </label>
-                    <input
-                      id="description"
-                      name="description"
-                      type="text"
-                      value={values.description}
-                      error={errors.description}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.description && touched.description && (
-                      <span>{errors.description}</span>
-                    )}
-                  </F.Column>
-                </F.Row>
+        {step ? (
+          <>
+            <S.Header>
+              <h2>Editar Etapa</h2>
+              <button type="button" onClick={handleClose}>
+                <S.IconClose />
+              </button>
+            </S.Header>
+            <S.Body>
+              <Formik
+                initialValues={{
+                  description: step.description || '',
+                  time: step.time || '',
+                }}
+                validationSchema={Schema}
+                onSubmit={updateStep}
+              >
+                {({
+                  values,
+                  handleChange,
+                  handleBlur,
+                  setFieldValue,
+                  errors,
+                  touched,
+                }) => (
+                  <F.Container>
+                    <F.Row>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Descrição</strong>
+                        </label>
+                        <textarea
+                          id="description"
+                          name="description"
+                          type="text"
+                          value={values.description}
+                          error={errors.description}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.description && touched.description && (
+                          <span>{errors.description}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
 
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Tempo de Preparo</strong>
-                    </label>
-                    <input
-                      id="time"
-                      name="time"
-                      type="text"
-                      value={values.time}
-                      error={errors.time}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.time && touched.time && <span>{errors.time}</span>}
-                  </F.Column>
-                </F.Row>
+                    <F.Row>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Tempo de Preparo</strong>
+                        </label>
+                        <input
+                          id="time"
+                          name="time"
+                          type="text"
+                          value={values.time}
+                          error={errors.time}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                        {errors.time && touched.time && (
+                          <span>{errors.time}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
 
-                <F.Row>
-                  <F.Column>
-                    <label>
-                      <S.IconName />
-                      <strong>Opcional</strong>
-                    </label>
-                    <Switch
-                      onChange={e => {
-                        setFieldValue('opcional', e);
-                      }}
-                      checked={values.opcional || false}
-                      onColor={colors.secondary}
-                      offColor={colors.tertiary}
-                    />
+                    <F.Row>
+                      <F.Column>
+                        <label>
+                          <S.IconName />
+                          <strong>Opcional</strong>
+                        </label>
+                        <Switch
+                          onChange={e => {
+                            setFieldValue('opcional', e);
+                          }}
+                          checked={values.opcional || false}
+                          onColor={colors.secondary}
+                          offColor={colors.tertiary}
+                        />
 
-                    {errors.cost && touched.cost && <span>{errors.cost}</span>}
-                  </F.Column>
-                </F.Row>
+                        {errors.cost && touched.cost && (
+                          <span>{errors.cost}</span>
+                        )}
+                      </F.Column>
+                    </F.Row>
 
-                <F.Footer>
-                  <Button
-                    loading={false}
-                    background={colors.tertiary}
-                    color="#333"
-                    type="button"
-                    onClick={handleClose}
-                  >
-                    <strong>Cancelar</strong>
-                  </Button>
-                  <Button
-                    loading={loading}
-                    background={colors.secondary}
-                    color="#fff"
-                    type="submit"
-                  >
-                    <strong>Confirmar</strong>
-                  </Button>
-                </F.Footer>
-              </F.Container>
-            )}
-          </Formik>
-        </S.Body>
+                    <F.Footer>
+                      <Button
+                        loading={false}
+                        background={colors.tertiary}
+                        color="#333"
+                        type="button"
+                        onClick={handleClose}
+                      >
+                        <strong>Cancelar</strong>
+                      </Button>
+                      <Button
+                        loading={loading}
+                        background={colors.secondary}
+                        color="#fff"
+                        type="submit"
+                      >
+                        <strong>Confirmar</strong>
+                      </Button>
+                    </F.Footer>
+                  </F.Container>
+                )}
+              </Formik>
+            </S.Body>
+          </>
+        ) : (
+          <ReactLoading
+            type="spin"
+            color={colors.secondary}
+            height={20}
+            width={20}
+          />
+        )}
       </S.Content>
     </S.Container>
   );
 }
 
 // Props
-CreateStep.propTypes = {
+UpdateStep.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   handleRefresh: PropTypes.func.isRequired,
-  recipeId: PropTypes.number,
+  stepId: PropTypes.number,
 };
 
 // Default Props
-CreateStep.defaultProps = {
+UpdateStep.defaultProps = {
   open: false,
-  recipeId: null,
+  stepId: null,
 };
