@@ -1,31 +1,61 @@
+// Dependencies
 import styled from 'styled-components';
 
-// Icons
-import { AddToQueue } from 'styled-icons/boxicons-regular';
-
 // Color Schema
-import colors from '~/styles/colors';
+import colors from '~styles/colors';
 
+// StyledComponents
 export const Container = styled.div`
-  height: 60%;
+  height: 100%;
   width: 100%;
-  padding: 16px;
+  overflow-y: auto;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #333;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${colors.secondary};
+    border-radius: 30px;
+  }
+`;
+
+export const Header = styled.header`
+  width: 100%;
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid ${colors.secondary};
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    color: ${colors.secondary};
+    font-size: 22px;
+  }
+`;
+
+export const Body = styled.div`
+  width: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  h1 {
-    margin-bottom: 16px;
-  }
-`;
-
-export const IconAdd = styled(AddToQueue)`
-  color: ${colors.secondary};
-  width: 50px;
-
-  @media (max-width: 990px) {
-    width: 40px;
+  strong {
+    font-size: 18px;
   }
 `;

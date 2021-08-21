@@ -2,60 +2,37 @@
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
-// Services
-import api from '~/services/api';
+// Redux
+import { fetchRecipesRequest } from '~/store/modules/recipe/actions';
+import { signOut } from '~/store/modules/auth/actions';
+
+// Utils
+import icon from '~/utils/icon';
 
 // Styles
 import * as S from './styles';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~/styles/colors';
 
-export default function Sidebar({ handleClose }) {
+export default function Sidebar({ handleClose, handleClick }) {
+  const dispatch = useDispatch();
+
   // States from Redux
   const profile = useSelector(state => state.user.profile);
+  const { recipes, loading } = useSelector(state => state.recipe);
 
   // States
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('');
-
-  const Icon = category => {
-    switch (category) {
-      case 'Lanche':
-        return <S.IconSnack />;
-
-      case 'Refeição':
-        return <S.IconLunch />;
-
-      case 'Sobremesa':
-        return <S.IconDessert />;
-
-      default:
-        return <S.IconOther />;
-    }
-  };
 
   const getRecipes = async () => {
     const { id } = profile;
-    setLoading(true);
 
-    try {
-      const name = query ? `&name=${query}` : '';
-      const response = await api.get(`/recipes?user_id=${id}${name}`);
-      setRecipes(response.data);
-    } catch (err) {
-      if (!err.response || err.response.data.error === undefined) {
-        toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
-      } else {
-        toast.error(`${err.response.data.error}`);
-      }
-    }
-
-    setLoading(false);
+    const dataQuery = query ? `?user_id=${id}&name=${query}` : `?user_id=${id}`;
+    dispatch(fetchRecipesRequest(dataQuery));
   };
 
   useEffect(() => {
@@ -67,48 +44,66 @@ export default function Sidebar({ handleClose }) {
     <S.Wrapper>
       <S.Container>
         <S.Header>
-          <S.Logo to="/">
+          <S.Logo to="/" onClick={handleClick}>
             <strong>Recipe</strong>
             <p>Notes</p>
           </S.Logo>
           <button type="button" onClick={handleClose}>
-            <S.IconMenu />
+            <I.IconMenu size={22} />
           </button>
         </S.Header>
 
-        <S.User to="/profile">
-          <S.IconPerson />
+        <S.User to="/profile" onClick={handleClick}>
+          <I.IconPerson size={22} />
           <h3>{profile.name}</h3>
         </S.User>
         <S.List>
           <header>
-            <S.IconBook />
+            <I.IconRecipes size={22} />
             <h3>Minhas Receitas</h3>
             <hr />
           </header>
           {loading ? (
-            <ReactLoading
-              type="spin"
-              color={colors.secondary}
-              height={20}
-              width={20}
-            />
+            <section>
+              <ReactLoading
+                type="spin"
+                color={colors.secondary}
+                height={20}
+                width={20}
+              />
+            </section>
           ) : (
-            <>
+            <section>
               {recipes &&
                 recipes.map(recipe => (
-                  <S.Item key={recipe.id} to={`/recipes/${recipe.id}`}>
-                    {Icon(recipe.category)}
+                  <S.Item
+                    key={recipe.id}
+                    to={`/recipes/${recipe.id}`}
+                    onClick={handleClick}
+                  >
+                    {icon(recipe.category, 18)}
                     <strong>{recipe.name}</strong>
                   </S.Item>
                 ))}
-            </>
+            </section>
           )}
+        </S.List>
+
+        <S.List>
+          <S.Item to="/recipes/add" onClick={handleClick}>
+            <I.IconAdd size={22} />
+
+            <strong>Adicionar Receita</strong>
+          </S.Item>
+          <button type="button" onClick={() => dispatch(signOut())}>
+            <I.IconLogout size={22} />
+            <strong>Sair</strong>
+          </button>
         </S.List>
       </S.Container>
       <S.Filter>
         <button type="button" onClick={getRecipes}>
-          <S.IconSearch />
+          <I.IconSearch size={24} />
         </button>
         <input
           placeholder="Buscar Receita..."
@@ -122,4 +117,5 @@ export default function Sidebar({ handleClose }) {
 // Props
 Sidebar.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };

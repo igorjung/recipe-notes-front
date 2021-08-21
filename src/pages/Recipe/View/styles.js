@@ -1,21 +1,5 @@
 import styled from 'styled-components';
 
-// Icons
-import { Book, FoodMenu } from 'styled-icons/boxicons-regular';
-import { TimeFive } from 'styled-icons/boxicons-solid';
-import { Bowl } from 'styled-icons/entypo';
-import { AppleAlt, MoneyBillWave } from 'styled-icons/fa-solid';
-import {
-  FoodEgg,
-  Food,
-  FoodCake,
-  FoodPizza,
-  AddSquare,
-} from 'styled-icons/fluentui-system-filled';
-import { Close } from 'styled-icons/evaicons-solid';
-import { Delete } from 'styled-icons/material';
-import { DriveFileRenameOutline } from 'styled-icons/material-sharp';
-
 // Color Schema
 import colors from '~/styles/colors';
 
@@ -23,7 +7,12 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: auto;
-  padding: 32px;
+  overflow-x: hidden;
+  padding: 64px;
+
+  @media (max-width: 990px) {
+    padding: 32px 16px;
+  }
 
   display: flex;
   flex-direction: column;
@@ -63,6 +52,13 @@ export const Cards = styled.ul`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+
+  @media (max-width: 990px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 `;
 
 export const Card = styled.div`
@@ -83,12 +79,24 @@ export const Card = styled.div`
   strong {
     margin-left: 16px;
   }
+
+  @media (max-width: 990px) {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    & + div {
+      margin: 8px 0 0 0;
+    }
+  }
 `;
 
 export const Body = styled.div`
   height: 100%;
   width: 100%;
-  margin-bottom: 32px;
 
   display: flex;
   flex-direction: column;
@@ -115,6 +123,10 @@ export const List = styled.ul`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+  }
+
+  @media (max-width: 990px) {
+    padding: 0 8px;
   }
 `;
 
@@ -196,10 +208,25 @@ export const Step = styled.li`
     align-items: flex-start;
     justify-content: space-between;
 
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      strong {
+        margin-left: 8px;
+      }
+    }
+
     h3 {
       font-size: 22px;
       color: ${colors.secondary};
     }
+  }
+
+  section {
+    padding: 0 32px;
   }
 
   footer {
@@ -228,12 +255,17 @@ export const Step = styled.li`
 
 export const Footer = styled.footer`
   width: 100%;
-  margin-top: 1000px;
+  margin-top: 32px;
+  padding: 0 16px 64px 16px;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 990px) {
+    padding: 0 8px 64px 8px;
+  }
 `;
 
 export const Title = styled.div`
@@ -268,130 +300,4 @@ export const Description = styled.div`
   border-radius: 5px;
 
   background: ${colors.primary};
-`;
-
-export const IconTime = styled(TimeFive)`
-  color: ${colors.secondary};
-  width: 16px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconMoney = styled(MoneyBillWave)`
-  color: ${colors.secondary};
-  width: 16px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconFood = styled(FoodMenu)`
-  color: ${colors.secondary};
-  width: 16px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconIngredient = styled(AppleAlt)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconUtensil = styled(Bowl)`
-  color: ${colors.secondary};
-  width: 20px;
-
-  @media (max-width: 990px) {
-    width: 40px;
-  }
-`;
-
-export const IconStep = styled(Book)`
-  color: ${colors.secondary};
-  width: 20px;
-
-  @media (max-width: 990px) {
-    width: 40px;
-  }
-`;
-
-export const IconSnack = styled(FoodEgg)`
-  color: ${colors.secondary};
-  width: 24px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconLunch = styled(Food)`
-  color: ${colors.secondary};
-  width: 24px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconDessert = styled(FoodCake)`
-  color: ${colors.secondary};
-  width: 24px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconOther = styled(FoodPizza)`
-  color: ${colors.secondary};
-  width: 24px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconDelete = styled(Delete)`
-  color: ${colors.warning};
-  width: 22px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconEdit = styled(DriveFileRenameOutline)`
-  color: ${colors.secondary};
-  width: 22px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconSubDelete = styled(Close)`
-  color: #fff;
-  width: 28px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconAdd = styled(AddSquare)`
-  color: ${colors.secondary};
-  width: 24px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
 `;

@@ -28,6 +28,14 @@ export const Row = styled.ul`
   & + ul {
     margin-top: 16px;
   }
+
+  @media (max-width: 990px) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 `;
 
 export const Column = styled.li`
@@ -37,18 +45,22 @@ export const Column = styled.li`
   align-items: flex-start;
   justify-content: flex-start;
 
+  @media (max-width: 990px) {
+    & + li {
+      margin-top: 16px;
+    }
+  }
+
   label {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
 
     strong {
       font-weight: bold;
       color: ${colors.tertiary};
-      margin-bottom: 4px;
-
       margin-left: 8px;
     }
   }
@@ -103,6 +115,7 @@ export const Column = styled.li`
 export const Footer = styled.footer`
   width: 100%;
   margin-top: 32px;
+  padding-bottom: 32px;
 
   display: flex;
   flex-direction: row;

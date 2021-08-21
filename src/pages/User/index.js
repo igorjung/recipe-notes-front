@@ -11,6 +11,7 @@ import { signOut } from '~/store/modules/auth/actions';
 // Styles
 import * as S from './styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~/styles/colors';
@@ -80,7 +81,7 @@ export default function Signup() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconName />
+                    <I.IconEdit />
                     <strong>Nome</strong>
                   </label>
                   <input
@@ -99,7 +100,7 @@ export default function Signup() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconEmail />
+                    <I.IconEmail />
                     <strong>E-mail</strong>
                   </label>
                   <input
@@ -149,19 +150,12 @@ export default function Signup() {
           validationSchema={PasswordSchema}
           onSubmit={handleSubmit}
         >
-          {({
-            values,
-            handleChange,
-            handleBlur,
-            errors,
-            touched,
-            handleReset,
-          }) => (
+          {({ values, handleChange, handleBlur, errors, touched }) => (
             <F.Container>
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Nova Senha</strong>
                   </label>
                   <Password
@@ -180,7 +174,7 @@ export default function Signup() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Confirmar Nova Senha</strong>
                   </label>
                   <Password
@@ -200,7 +194,7 @@ export default function Signup() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Senha Anterior</strong>
                   </label>
                   <Password
@@ -217,15 +211,6 @@ export default function Signup() {
               </F.Row>
 
               <F.Footer>
-                <Button
-                  loading={false}
-                  background="#ddd"
-                  color="#666"
-                  type="button"
-                  onClick={handleReset}
-                >
-                  <strong>Limpar</strong>
-                </Button>
                 <Button
                   loading={loading}
                   background={colors.secondary}

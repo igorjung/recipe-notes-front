@@ -1,12 +1,12 @@
 // Dependencies
 import styled from 'styled-components';
-import { Menu } from 'styled-icons/boxicons-regular';
 
 // Color Schema
 import colors from '~/styles/colors';
 
 // StyledComponents
 export const Wrapper = styled.div`
+  position: relative;
   height: 100%;
   width: 100%;
 
@@ -17,6 +17,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Button = styled.button`
+  position: fixed;
+  top: 0;
+  left: 0;
+
   height: 30px;
   width: 45px;
   border-radius: 0 10px 10px 0;
@@ -26,13 +30,4 @@ export const Button = styled.button`
   justify-content: center;
 
   background-color: ${colors.primary};
-`;
-
-export const IconMenu = styled(Menu)`
-  color: ${colors.secondary};
-  height: 24px;
-
-  @media (max-width: 990px) {
-    height: 18px;
-  }
 `;

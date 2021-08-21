@@ -16,6 +16,7 @@ import Button from '~/components/Button';
 // Styles
 import * as S from '../styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -93,7 +94,7 @@ export default function UpdateStep({
             <S.Header>
               <h2>Editar Etapa</h2>
               <button type="button" onClick={handleClose}>
-                <S.IconClose />
+                <I.IconClose size={24} />
               </button>
             </S.Header>
             <S.Body>
@@ -101,6 +102,7 @@ export default function UpdateStep({
                 initialValues={{
                   description: step.description || '',
                   time: step.time || '',
+                  opcional: step.opcional || false,
                 }}
                 validationSchema={Schema}
                 onSubmit={updateStep}
@@ -117,7 +119,7 @@ export default function UpdateStep({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconEdit />
                           <strong>Descrição</strong>
                         </label>
                         <textarea
@@ -138,7 +140,7 @@ export default function UpdateStep({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconTime />
                           <strong>Tempo de Preparo</strong>
                         </label>
                         <input
@@ -159,7 +161,7 @@ export default function UpdateStep({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconSwitch />
                           <strong>Opcional</strong>
                         </label>
                         <Switch

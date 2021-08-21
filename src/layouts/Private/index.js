@@ -4,23 +4,53 @@ import PropTypes from 'prop-types';
 
 // Styles
 import * as S from './styles';
+import * as I from '~/styles/icons';
 
 // Components
 import Sidebar from '~/components/Sidebar';
 
-export default function Private({ children }) {
-  const [open, setOpen] = useState(true);
+export default function Private({ children, size }) {
+  const [open, setOpen] = useState(!!(size > 800));
+
+  const handleClick = () => {
+    if (size <= 800) {
+      setOpen(false);
+    }
+  };
 
   return (
     <S.Wrapper>
-      {open ? (
-        <Sidebar handleClose={() => setOpen(false)} />
+      {size <= 800 ? (
+        <>
+          {open ? (
+            <Sidebar
+              handleClose={() => setOpen(false)}
+              handleClick={handleClick}
+            />
+          ) : (
+            <>
+              <S.Button type="button" onClick={() => setOpen(true)}>
+                <I.IconMenu />
+              </S.Button>
+              {children}
+            </>
+          )}
+        </>
       ) : (
-        <S.Button type="button" onClick={() => setOpen(true)}>
-          <S.IconMenu />
-        </S.Button>
+        <>
+          {open ? (
+            <Sidebar
+              handleClose={() => setOpen(false)}
+              handleClick={handleClick}
+            />
+          ) : (
+            <S.Button type="button" onClick={() => setOpen(true)}>
+              <I.IconMenu />
+            </S.Button>
+          )}
+          {children}
+        </>
       )}
-      {children}
     </S.Wrapper>
   );
 }
@@ -28,4 +58,5 @@ export default function Private({ children }) {
 // Props
 Private.propTypes = {
   children: PropTypes.element.isRequired,
+  size: PropTypes.number.isRequired,
 };

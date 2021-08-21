@@ -12,6 +12,7 @@ import Button from '~/components/Button';
 
 // Styles
 import * as S from '../styles';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -80,12 +81,14 @@ export default function DeleteIngredient({
           <>
             <S.Header>
               <h2>{ingredient.name}</h2>
-              <button type="button" onClick={handleRefresh}>
-                <S.IconClose />
+              <button type="button" onClick={handleClose}>
+                <I.IconClose size={24} />
               </button>
             </S.Header>
             <S.Body>
-              <strong>Tem certeza que deseja deletar o ingrediente?</strong>
+              <S.Section>
+                <strong>Tem certeza que deseja deletar o ingrediente?</strong>
+              </S.Section>
             </S.Body>
             <S.Footer>
               <Button

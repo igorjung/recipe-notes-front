@@ -11,6 +11,7 @@ import { signUpRequest } from '~/store/modules/auth/actions';
 // Styles
 import * as S from './styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~/styles/colors';
@@ -76,7 +77,7 @@ export default function User() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconName />
+                    <I.IconEdit />
                     <strong>Nome</strong>
                   </label>
                   <input
@@ -95,7 +96,7 @@ export default function User() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconEmail />
+                    <I.IconEmail />
                     <strong>E-mail</strong>
                   </label>
                   <input
@@ -114,7 +115,7 @@ export default function User() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Senha</strong>
                   </label>
                   <Password
@@ -133,7 +134,7 @@ export default function User() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Confirmar Senha</strong>
                   </label>
                   <Password

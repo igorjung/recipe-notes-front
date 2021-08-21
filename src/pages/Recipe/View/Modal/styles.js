@@ -2,10 +2,6 @@
 import styled from 'styled-components';
 import Modal from 'react-modal';
 
-// Icons
-import { Close } from 'styled-icons/evaicons-solid';
-import { DriveFileRenameOutline } from 'styled-icons/material-sharp';
-
 // Color Schema
 import colors from '~styles/colors';
 
@@ -81,6 +77,10 @@ export const Body = styled.div`
   }
 `;
 
+export const Section = styled.div`
+  padding: 32px 0;
+`;
+
 export const Footer = styled.footer`
   width: 100%;
   margin-top: 32px;
@@ -89,22 +89,4 @@ export const Footer = styled.footer`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-`;
-
-export const IconClose = styled(Close)`
-  color: ${colors.secondary};
-  width: 28px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconName = styled(DriveFileRenameOutline)`
-  color: ${colors.secondary};
-  width: 16px;
-
-  @media (max-width: 990px) {
-    width: 14px;
-  }
 `;

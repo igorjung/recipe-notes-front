@@ -15,7 +15,7 @@ export const ButtonStyled = styled.button`
   justify-content: center;
 
   @media (max-width: 990px) {
-    min-width: 100%;
+    min-width: 60px;
   }
 
   strong {

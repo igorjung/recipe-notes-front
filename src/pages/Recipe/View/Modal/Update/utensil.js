@@ -16,6 +16,7 @@ import Button from '~/components/Button';
 // Styles
 import * as S from '../styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -91,7 +92,7 @@ export default function UpdateUtensil({
             <S.Header>
               <h2>Editar Utensílio</h2>
               <button type="button" onClick={handleClose}>
-                <S.IconClose />
+                <I.IconClose  size={24} />
               </button>
             </S.Header>
             <S.Body>
@@ -115,7 +116,7 @@ export default function UpdateUtensil({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconEdit />
                           <strong>Nome</strong>
                         </label>
                         <input
@@ -136,7 +137,7 @@ export default function UpdateUtensil({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconSwitch />
                           <strong>Opcional</strong>
                         </label>
                         <Switch

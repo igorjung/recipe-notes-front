@@ -6,12 +6,14 @@ import { toast } from 'react-toastify';
 
 // Services
 import api from '~/services/api';
+import history from '~/services/history';
 
 // Components
 import Button from '~/components/Button';
 
 // Styles
 import * as S from '../styles';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -32,7 +34,7 @@ export default function DeleteRecipe({
 
     try {
       const response = await api.get(`/recipes/${recipeId}`);
-      handleRefresh(response.data);
+      setRecipe(response.data);
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -49,7 +51,8 @@ export default function DeleteRecipe({
 
     try {
       await api.delete(`/recipes/${recipeId}`);
-      handleClose();
+      handleRefresh();
+      history.push('/');
     } catch (err) {
       if (!err.response || err.response.data.error === undefined) {
         toast.error(`Um erro aconteceu, tente novamente mais tarde.`);
@@ -81,11 +84,13 @@ export default function DeleteRecipe({
             <S.Header>
               <h2>{recipe.name}</h2>
               <button type="button" onClick={handleClose}>
-                <S.IconClose />
+                <I.IconClose size={24} />
               </button>
             </S.Header>
             <S.Body>
-              <strong>Tem certeza que deseja deletar essa receita?</strong>
+              <S.Section>
+                <strong>Tem certeza que deseja deletar essa receita?</strong>
+              </S.Section>
             </S.Body>
             <S.Footer>
               <Button

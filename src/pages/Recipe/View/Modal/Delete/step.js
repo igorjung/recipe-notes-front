@@ -12,6 +12,7 @@ import Button from '~/components/Button';
 
 // Styles
 import * as S from '../styles';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -81,11 +82,13 @@ export default function DeleteStep({
             <S.Header>
               <h2>Etapa {step.order}</h2>
               <button type="button" onClick={handleClose}>
-                <S.IconClose />
+                <I.IconClose size={24} />
               </button>
             </S.Header>
             <S.Body>
-              <strong>Tem certeza que deseja deletar a etapa?</strong>
+              <S.Section>
+                <strong>Tem certeza que deseja deletar a etapa?</strong>
+              </S.Section>
             </S.Body>
             <S.Footer>
               <Button

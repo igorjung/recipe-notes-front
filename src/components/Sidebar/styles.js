@@ -1,16 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-// Icons
-import { PersonFill, BookmarkFill } from 'styled-icons/bootstrap';
-import {
-  FoodEgg,
-  Food,
-  FoodCake,
-  FoodPizza,
-} from 'styled-icons/fluentui-system-filled';
-import { Search, Menu } from 'styled-icons/boxicons-regular';
-
 // Color Schema
 import colors from '~/styles/colors';
 
@@ -18,6 +8,10 @@ export const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   max-width: 400px;
+
+  @media (max-width: 500px) {
+    max-width: 100%;
+  }
 
   display: flex;
   flex-direction: column;
@@ -139,12 +133,29 @@ export const List = styled.ul`
       background-color: ${colors.secondary};
     }
   }
+
+  section {
+    width: 100%;
+    padding-left: 8px;
+  }
+
+  button {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+
+    strong {
+      margin-left: 8px;
+      color: ${colors.warning};
+    }
+  }
 `;
 
 export const Item = styled(Link)`
   width: 100%;
-  padding-left: 8px;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -180,77 +191,5 @@ export const Filter = styled.div`
     background-color: #000;
     color: ${colors.tertiary};
     border: 0;
-  }
-`;
-
-export const IconPerson = styled(PersonFill)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconBook = styled(BookmarkFill)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconSearch = styled(Search)`
-  color: ${colors.tertiary};
-  width: 20px;
-
-  @media (max-width: 990px) {
-    width: 18px;
-  }
-`;
-
-export const IconSnack = styled(FoodEgg)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconLunch = styled(Food)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconDessert = styled(FoodCake)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconOther = styled(FoodPizza)`
-  color: ${colors.secondary};
-  width: 18px;
-
-  @media (max-width: 990px) {
-    width: 16px;
-  }
-`;
-
-export const IconMenu = styled(Menu)`
-  color: ${colors.secondary};
-  height: 24px;
-
-  @media (max-width: 990px) {
-    height: 18px;
   }
 `;

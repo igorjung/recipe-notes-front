@@ -1,11 +1,19 @@
 // Dependencies
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 
+// Redux
+import { fetchRecipesRequest } from '~/store/modules/recipe/actions';
+
 // Services
 import api from '~/services/api';
+import history from '~/services/history';
+
+// Utils
+import icon from '~/utils/icon';
 
 // Components
 import CreateIngredient from './Modal/Create/ingredient';
@@ -22,17 +30,21 @@ import UpdateUtensil from './Modal/Update/utensil';
 import UpdateStep from './Modal/Update/step';
 import UpdateRecipe from './Modal/Update/recipe';
 
-import RemoveIngredient from './Modal/Remove/ingredient';
-import RemoveUtensil from './Modal/Remove/utensil';
+import Button from '~/components/Button';
 
 // Styles
 import * as S from './styles';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~/styles/colors';
 
 export default function Recipe() {
+  const dispatch = useDispatch();
   const { id } = useParams();
+
+  // States from Redux
+  const profile = useSelector(state => state.user.profile);
 
   // States
   const [recipe, setRecipe] = useState(null);
@@ -42,22 +54,6 @@ export default function Recipe() {
   const [ingredientId, setIngredientId] = useState(null);
   const [utensilId, setUtensilId] = useState(null);
   const [stepId, setStepId] = useState(null);
-
-  const Icon = category => {
-    switch (category) {
-      case 'Lanche':
-        return <S.IconSnack />;
-
-      case 'Refeição':
-        return <S.IconLunch />;
-
-      case 'Sobremesa':
-        return <S.IconDessert />;
-
-      default:
-        return <S.IconOther />;
-    }
-  };
 
   const getRecipe = async () => {
     setRecipe(null);
@@ -90,6 +86,16 @@ export default function Recipe() {
     setUtensilId(null);
     setStepId(null);
     getRecipe();
+
+    dispatch(fetchRecipesRequest(`?user_id=${profile.id}`));
+  };
+
+  const handleDelete = () => {
+    setModalIndex(0);
+    setIngredientId(null);
+    setUtensilId(null);
+    setStepId(null);
+    dispatch(fetchRecipesRequest(`?user_id=${profile.id}`));
   };
 
   useEffect(() => {
@@ -121,21 +127,8 @@ export default function Recipe() {
         <DeleteRecipe
           open={!!(modalIndex === 4 && recipe && recipe.id)}
           handleClose={handleClose}
-          handleRefresh={handleRefresh}
+          handleRefresh={handleDelete}
           recipeId={recipe && recipe.id}
-        />
-
-        <RemoveIngredient
-          open={!!(modalIndex === 5 && ingredientId)}
-          handleClose={handleClose}
-          handleRefresh={handleRefresh}
-          ingredientId={ingredientId}
-        />
-        <RemoveUtensil
-          open={!!(modalIndex === 6 && utensilId)}
-          handleClose={handleClose}
-          handleRefresh={handleRefresh}
-          utensilId={utensilId}
         />
 
         <CreateIngredient
@@ -195,25 +188,25 @@ export default function Recipe() {
           <>
             <S.Title>
               <div>
-                {Icon(recipe.category)}
+                {icon(recipe.category, 28)}
                 <h1>{recipe.name}</h1>
               </div>
               <button type="button" onClick={() => setModalIndex(13)}>
-                <S.IconEdit />
+                <I.IconEdit size={24} />
               </button>
             </S.Title>
             {recipe && (
               <S.Cards>
                 <S.Card>
-                  <S.IconTime />
+                  <I.IconTime />
                   <strong>{recipe.preparation_time}</strong>
                 </S.Card>
                 <S.Card>
-                  <S.IconMoney />
+                  <I.IconCost />
                   <strong>{recipe.financial_cost}</strong>
                 </S.Card>
                 <S.Card>
-                  <S.IconFood />
+                  <I.IconCategory />
                   <strong>{recipe.category}</strong>
                 </S.Card>
               </S.Cards>
@@ -233,12 +226,12 @@ export default function Recipe() {
             <header>
               <S.Title>
                 <div>
-                  <S.IconIngredient />
+                  <I.IconIngredient size={24} />
                   <h2>Ingredientes</h2>
                 </div>
 
                 <button type="button" onClick={() => setModalIndex(7)}>
-                  <S.IconAdd />
+                  <I.IconAdd size={24} />
                 </button>
               </S.Title>
             </header>
@@ -258,7 +251,7 @@ export default function Recipe() {
                       setModalIndex(10);
                     }}
                   >
-                    <S.IconEdit />
+                    <I.IconEdit size={24} />
                   </button>
                   <button
                     type="button"
@@ -267,7 +260,7 @@ export default function Recipe() {
                       setModalIndex(1);
                     }}
                   >
-                    <S.IconDelete />
+                    <I.IconDelete size={24} />
                   </button>
                 </S.Item>
               ))
@@ -281,11 +274,11 @@ export default function Recipe() {
             <header>
               <S.Title>
                 <div>
-                  <S.IconUtensil />
+                  <I.IconUtensil size={24} />
                   <h2>Utensílios</h2>
                 </div>
                 <button type="button" onClick={() => setModalIndex(8)}>
-                  <S.IconAdd />
+                  <I.IconAdd size={24} />
                 </button>
               </S.Title>
             </header>
@@ -303,7 +296,7 @@ export default function Recipe() {
                       setModalIndex(11);
                     }}
                   >
-                    <S.IconEdit />
+                    <I.IconEdit size={24} />
                   </button>
                   <button
                     type="button"
@@ -312,7 +305,7 @@ export default function Recipe() {
                       setModalIndex(2);
                     }}
                   >
-                    <S.IconDelete />
+                    <I.IconDelete size={24} />
                   </button>
                 </S.Item>
               ))
@@ -326,11 +319,11 @@ export default function Recipe() {
             <header>
               <S.Title>
                 <div>
-                  <S.IconStep />
+                  <I.IconStep size={24} />
                   <h2>Modo de preparo</h2>
                 </div>
                 <button type="button" onClick={() => setModalIndex(9)}>
-                  <S.IconAdd />
+                  <I.IconAdd size={24} />
                 </button>
               </S.Title>
             </header>
@@ -349,16 +342,18 @@ export default function Recipe() {
                         setModalIndex(12);
                       }}
                     >
-                      <S.IconEdit />
+                      <I.IconEdit size={24} />
                     </button>
                   </header>
 
-                  <strong>{step.description}</strong>
+                  <section>
+                    <strong>{step.description}</strong>
+                  </section>
 
                   <footer>
                     {step.time && (
                       <div>
-                        <S.IconTime />
+                        <I.IconTime size={24} />
                         <strong>{step.time}</strong>
                       </div>
                     )}
@@ -369,7 +364,7 @@ export default function Recipe() {
                         setModalIndex(3);
                       }}
                     >
-                      <S.IconDelete />
+                      <I.IconDelete size={24} />
                     </button>
                   </footer>
                 </S.Step>
@@ -380,6 +375,28 @@ export default function Recipe() {
               </S.Item>
             )}
           </S.List>
+
+          <S.Footer>
+            <Button
+              loading={false}
+              background={colors.tertiary}
+              color="#333"
+              type="button"
+              onClick={() => history.push('/')}
+            >
+              <strong>Voltar</strong>
+            </Button>
+
+            <Button
+              loading={false}
+              background={colors.warning}
+              color="#fff"
+              type="button"
+              onClick={() => setModalIndex(4)}
+            >
+              <strong>Deletar</strong>
+            </Button>
+          </S.Footer>
         </S.Body>
       )}
     </S.Container>

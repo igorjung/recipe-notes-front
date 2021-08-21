@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 // Styles
 import * as S from './styles';
+import * as I from '~/styles/icons';
 
 export function Password({ name, value, error, ...rest }) {
   const [type, setType] = useState(false);
@@ -21,7 +22,7 @@ export function Password({ name, value, error, ...rest }) {
         {...rest}
       />
       <button type="button" onClick={() => setType(!type)}>
-        {type ? <S.IconVisible /> : <S.IconHidden />}
+        {type ? <I.IconVisible /> : <I.IconHidden />}
       </button>
     </S.Container>
   );

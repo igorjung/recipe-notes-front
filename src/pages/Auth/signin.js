@@ -11,6 +11,7 @@ import { signInRequest } from '~/store/modules/auth/actions';
 // Styles
 import * as S from './styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~/styles/colors';
@@ -66,7 +67,7 @@ export default function Signin() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconEmail />
+                    <I.IconEmail />
                     <strong>E-mail</strong>
                   </label>
                   <input
@@ -85,7 +86,7 @@ export default function Signin() {
               <F.Row>
                 <F.Column>
                   <label>
-                    <S.IconPassword />
+                    <I.IconPassword />
                     <strong>Senha</strong>
                   </label>
                   <Password

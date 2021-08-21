@@ -16,6 +16,7 @@ import Button from '~/components/Button';
 // Styles
 import * as S from '../styles';
 import * as F from '~/styles/form';
+import * as I from '~/styles/icons';
 
 // Color Schema
 import colors from '~styles/colors';
@@ -34,7 +35,7 @@ export default function UpdateRecipe({
   const Schema = Yup.object().shape({
     name: Yup.string().required('Esse campo é obrigatório'),
     description: Yup.string(),
-    category: Yup.string(),
+    category: Yup.string().required('Esse campo é obrigatório'),
     preparation_time: Yup.string(),
     financial_cost: Yup.string(),
   });
@@ -99,7 +100,7 @@ export default function UpdateRecipe({
             <S.Header>
               <h2>Editar Receita</h2>
               <button type="button" onClick={handleClose}>
-                <S.IconClose />
+                <I.IconClose />
               </button>
             </S.Header>
             <S.Body>
@@ -119,7 +120,7 @@ export default function UpdateRecipe({
                     <F.Row columns={2}>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconEdit />
                           <strong>Nome</strong>
                         </label>
                         <input
@@ -138,7 +139,7 @@ export default function UpdateRecipe({
 
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconCategory />
                           <strong>Categoria</strong>
                         </label>
                         <select
@@ -153,6 +154,7 @@ export default function UpdateRecipe({
                           <option vlaue="Lanche.">Lanche</option>
                           <option vlaue="Refeição">Refeição</option>
                           <option vlaue="Sobremesa">Sobremesa</option>
+                          <option vlaue="Outo">Outo</option>
                         </select>
                         {errors.category && touched.category && (
                           <span>{errors.category}</span>
@@ -163,7 +165,7 @@ export default function UpdateRecipe({
                     <F.Row columns={2}>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconTime />
                           <strong>Tempo de preparo</strong>
                         </label>
                         <input
@@ -183,7 +185,7 @@ export default function UpdateRecipe({
 
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconCost />
                           <strong>Custo</strong>
                         </label>
                         <MoneyInput
@@ -203,7 +205,7 @@ export default function UpdateRecipe({
                     <F.Row>
                       <F.Column>
                         <label>
-                          <S.IconName />
+                          <I.IconEdit />
                           <strong>Descrição</strong>
                         </label>
                         <textarea
