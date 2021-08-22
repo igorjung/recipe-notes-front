@@ -156,6 +156,7 @@ export default function CreateIngredient({
                       <option vlaue="L">L</option>
                       <option vlaue="g">g</option>
                       <option vlaue="kg">kg</option>
+                      <option vlaue="colher(sopa)">colher(sopa)</option>
                     </select>
                     {errors.unity && touched.unity && (
                       <span>{errors.unity}</span>

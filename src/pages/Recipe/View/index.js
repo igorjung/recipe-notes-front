@@ -238,7 +238,7 @@ export default function Recipe() {
             </header>
             {recipe.ingredients && recipe.ingredients[0] ? (
               recipe.ingredients.map(ingredient => (
-                <S.Item key={ingredient.id} grid="40% 20% 20% 10% 10%">
+                <S.Item key={ingredient.id} grid="40% 25% 15% 10% 10%">
                   <strong data-tip={ingredient.name}>
                     {`${ingredient.name.substring(0, 25)}${
                       ingredient.name.length >= 25 ? '...' : ''
