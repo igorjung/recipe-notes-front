@@ -128,6 +128,10 @@ export const List = styled.ul`
   @media (max-width: 990px) {
     padding: 0 8px;
   }
+
+  @media (max-width: 500px) {
+    padding: 0;
+  }
 `;
 
 export const Item = styled.li`
@@ -141,6 +145,10 @@ export const Item = styled.li`
   grid-template-columns: ${props => (props.grid ? props.grid : '1fr')};
 
   background: ${colors.primary};
+
+  strong {
+    word-break: break-word;
+  }
 `;
 
 export const SubList = styled.ul`

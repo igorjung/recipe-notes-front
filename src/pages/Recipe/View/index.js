@@ -1,6 +1,7 @@
 // Dependencies
 import React, { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
+import ReactTooltip from 'react-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
@@ -237,13 +238,23 @@ export default function Recipe() {
             </header>
             {recipe.ingredients && recipe.ingredients[0] ? (
               recipe.ingredients.map(ingredient => (
-                <S.Item key={ingredient.id} grid="200px 100px auto 30px 30px">
-                  <strong>
-                    {ingredient.name}
+                <S.Item key={ingredient.id} grid="40% 20% 20% 10% 10%">
+                  <strong data-tip={ingredient.name}>
+                    {`${ingredient.name.substring(0, 25)}${
+                      ingredient.name.length >= 25 ? '...' : ''
+                    }`}
                     {ingredient.opcional && ' (opcional)'}
                   </strong>
-                  <strong>{ingredient.quantity}</strong>
-                  <strong>{ingredient.cost}</strong>
+                  <strong data-tip={ingredient.quantity}>
+                    {`${ingredient.quantity.substring(0, 25)}${
+                      ingredient.quantity.length >= 25 ? '...' : ''
+                    }`}
+                  </strong>
+                  <strong data-tip={ingredient.cost}>
+                    {`${ingredient.cost.substring(0, 25)}${
+                      ingredient.cost.length >= 25 ? '...' : ''
+                    }`}
+                  </strong>
                   <button
                     type="button"
                     onClick={() => {
@@ -269,6 +280,7 @@ export default function Recipe() {
                 <strong>Não há igredientes para essa receita.</strong>
               </S.Item>
             )}
+            <ReactTooltip type="dark" effect="float" place="bottom" />
           </S.List>
           <S.List>
             <header>
@@ -284,9 +296,11 @@ export default function Recipe() {
             </header>
             {recipe.utensils && recipe.utensils[0] ? (
               recipe.utensils.map(utensil => (
-                <S.Item key={utensil.id} grid="auto 30px 30px">
-                  <strong>
-                    {utensil.name}
+                <S.Item key={utensil.id} grid="80% 10% 10%">
+                  <strong data-tip={utensil.name}>
+                    {`${utensil.name.substring(0, 25)}${
+                      utensil.name.length >= 25 ? '...' : ''
+                    }`}
                     {utensil.opcional && ' (opcional)'}
                   </strong>
                   <button
