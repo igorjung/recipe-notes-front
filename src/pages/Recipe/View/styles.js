@@ -149,6 +149,13 @@ export const Item = styled.li`
   strong {
     word-break: break-word;
   }
+
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
 `;
 
 export const SubList = styled.ul`

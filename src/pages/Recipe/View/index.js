@@ -238,7 +238,7 @@ export default function Recipe() {
             </header>
             {recipe.ingredients && recipe.ingredients[0] ? (
               recipe.ingredients.map(ingredient => (
-                <S.Item key={ingredient.id} grid="40% 25% 15% 10% 10%">
+                <S.Item key={ingredient.id} grid="40% 28% 24% 10%">
                   <strong data-tip={ingredient.name}>
                     {`${ingredient.name.substring(0, 25)}${
                       ingredient.name.length >= 25 ? '...' : ''
@@ -255,24 +255,26 @@ export default function Recipe() {
                       ingredient.cost.length >= 25 ? '...' : ''
                     }`}
                   </strong>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIngredientId(ingredient.id);
-                      setModalIndex(10);
-                    }}
-                  >
-                    <I.IconEdit size={24} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIngredientId(ingredient.id);
-                      setModalIndex(1);
-                    }}
-                  >
-                    <I.IconDelete size={24} />
-                  </button>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIngredientId(ingredient.id);
+                        setModalIndex(10);
+                      }}
+                    >
+                      <I.IconEdit size={24} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIngredientId(ingredient.id);
+                        setModalIndex(1);
+                      }}
+                    >
+                      <I.IconDelete size={24} />
+                    </button>
+                  </div>
                 </S.Item>
               ))
             ) : (
@@ -296,31 +298,33 @@ export default function Recipe() {
             </header>
             {recipe.utensils && recipe.utensils[0] ? (
               recipe.utensils.map(utensil => (
-                <S.Item key={utensil.id} grid="80% 10% 10%">
+                <S.Item key={utensil.id} grid="auto 10%">
                   <strong data-tip={utensil.name}>
                     {`${utensil.name.substring(0, 25)}${
                       utensil.name.length >= 25 ? '...' : ''
                     }`}
                     {utensil.opcional && ' (opcional)'}
                   </strong>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setUtensilId(utensil.id);
-                      setModalIndex(11);
-                    }}
-                  >
-                    <I.IconEdit size={24} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setUtensilId(utensil.id);
-                      setModalIndex(2);
-                    }}
-                  >
-                    <I.IconDelete size={24} />
-                  </button>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUtensilId(utensil.id);
+                        setModalIndex(11);
+                      }}
+                    >
+                      <I.IconEdit size={24} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUtensilId(utensil.id);
+                        setModalIndex(2);
+                      }}
+                    >
+                      <I.IconDelete size={24} />
+                    </button>
+                  </div>
                 </S.Item>
               ))
             ) : (
@@ -365,12 +369,14 @@ export default function Recipe() {
                   </section>
 
                   <footer>
-                    {step.time && (
-                      <div>
-                        <I.IconTime size={24} />
-                        <strong>{step.time}</strong>
-                      </div>
-                    )}
+                    <div>
+                      {step.time && (
+                        <>
+                          <I.IconTime size={24} />
+                          <strong>{step.time}</strong>
+                        </>
+                      )}
+                    </div>
                     <button
                       type="button"
                       onClick={() => {

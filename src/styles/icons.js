@@ -43,7 +43,7 @@ export const IconDelete = styled(Delete)`
   height: ${props => (props.size ? `${props.size}px` : '18px')};
 
   @media (max-height: 990px) {
-    height: ${props => (props.size ? `${props.size - 2}px` : '18px')};
+    height: 16px;
   }
 `;
 
@@ -52,7 +52,7 @@ export const IconEdit = styled(Edit)`
   height: ${props => (props.size ? `${props.size}px` : '18px')};
 
   @media (max-height: 990px) {
-    height: ${props => (props.size ? `${props.size - 2}px` : '18px')};
+    height: 16px;
   }
 `;
 
